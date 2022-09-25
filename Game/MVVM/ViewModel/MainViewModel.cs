@@ -87,6 +87,7 @@ namespace GameClient.MVVM.ViewModel
         {
             Button button = sender as Button;
             button.Background = Brushes.Red;
+            button.IsEnabled = false;
             TileName = button.Name;
         }
         private void StartGameEvent()
