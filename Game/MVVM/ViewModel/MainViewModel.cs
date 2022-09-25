@@ -2,16 +2,11 @@
 using GameClient.MVVM.Core;
 using GameClient.MVVM.Model;
 using GameClient.Net;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -74,18 +69,23 @@ namespace GameClient.MVVM.ViewModel
         }
         private void AttackEnemyTile()
         {
-            var tileName = _server.PacketReader.ReadMessage();
-            tileName = tileName.Replace("e", "");
-            Button btn = (Button)MainWindow.AppWindow.FindName(tileName);
-            MessageBox.Show(btn.Name);
-            btn.Background = Brushes.Red;
-            //TileName = string.Empty;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var messageString = _server.PacketReader.ReadMessage();
+                string buttonName = messageString.Replace("e", "m");
+                foreach (StackPanel item in MainWindow.AppWindow.myStackPanel.Children)
+                {
+                    foreach (Button button in item.Children)
+                    {
+                        if(button.Name == buttonName)
+                             button.Background = Brushes.Red;
+                    }
+                }
+            });  
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Paspaudė");
             TileName = (sender as Button).Name.ToString();
-            //MessageBox.Show(TileName);
         }
         private void StartGameEvent()
         {
@@ -124,6 +124,7 @@ namespace GameClient.MVVM.ViewModel
                         newBtn.Name = "m" + i.ToString() + j.ToString();
                         newBtn.Width = width;
                         newBtn.Height = height;
+                        System.Diagnostics.Debug.WriteLine(newBtn.Parent);
                         stackPanel.Children.Add(newBtn);
                     }
                 }
