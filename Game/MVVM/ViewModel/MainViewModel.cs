@@ -85,7 +85,9 @@ namespace GameClient.MVVM.ViewModel
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TileName = (sender as Button).Name.ToString();
+            Button button = sender as Button;
+            button.Background = Brushes.Red;
+            TileName = button.Name;
         }
         private void StartGameEvent()
         {
