@@ -138,6 +138,7 @@ namespace GameClient.MVVM.ViewModel
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Reikia implementuoti ataką! :)");
             /*Button button = (Button)sender;
             int content = Convert.ToInt32(button.Content);
             switch (content)
