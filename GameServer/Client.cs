@@ -42,6 +42,11 @@ namespace GameServer
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Sukurtas žaidimas! {gameStartedMessage}");
                             Program.BroadcastGameStart($"[{DateTime.Now}]: [{Username}]: {gameStartedMessage}");
                             break;
+                        case 20:
+                            var tileAttacked = _packetReader.ReadMessage();
+                            Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");
+                            Program.BroadcastMessage($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");
+                            break;
                         default:
                             break;
                     }

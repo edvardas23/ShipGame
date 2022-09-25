@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace GameClient.MVVM.ViewModel
@@ -22,10 +23,12 @@ namespace GameClient.MVVM.ViewModel
         public Session gameSession { get; set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand StartNewGameCommand { get; set; }
+        public RelayCommand AttackTileCommand { get; set; }
         private Server _server;
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
         public GameModel gameModel { get; set; }
+        public string TileName { get; set; }
 
         public string Message { get; set; }
         public string Username { get; set; }
@@ -39,9 +42,11 @@ namespace GameClient.MVVM.ViewModel
             _server.messageReceivedEvent += MessageReceived;
             _server.userDisconnectedEvent += RemoveUser;
             _server.startGameEvent += StartGameEvent;
+            _server.attackEnemyTile += AttackEnemyTile;
             ConnectToSeverCommand = new RelayCommand(o => _server.ConnectToSever(Username), o => !string.IsNullOrEmpty(Username));
             SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));       
-            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(), o => Users.Count == 2);       
+            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(), o => Users.Count == 2);
+            AttackTileCommand = new RelayCommand(o => _server.AttackEnemyTileToServer(TileName));
         }
         private void UserConnected()
         {
@@ -66,6 +71,21 @@ namespace GameClient.MVVM.ViewModel
             var uid = _server.PacketReader.ReadMessage();
             var user = Users.Where(x => x.UID == uid).FirstOrDefault();
             Application.Current.Dispatcher.Invoke(() => Users.Remove(user));    
+        }
+        private void AttackEnemyTile()
+        {
+            var tileName = _server.PacketReader.ReadMessage();
+            tileName = tileName.Replace("e", "");
+            Button btn = (Button)MainWindow.AppWindow.FindName(tileName);
+            MessageBox.Show(btn.Name);
+            btn.Background = Brushes.Red;
+            //TileName = string.Empty;
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("Paspaudė");
+            TileName = (sender as Button).Name.ToString();
+            //MessageBox.Show(TileName);
         }
         private void StartGameEvent()
         {
@@ -129,27 +149,13 @@ namespace GameClient.MVVM.ViewModel
                         newBtn.Content = "e" + i.ToString() + j.ToString();
                         newBtn.Name = "e" + i.ToString() + j.ToString();
                         newBtn.Click  += Button_Click;
+                        newBtn.Command = AttackTileCommand;
                         newBtn.Width = width;
                         newBtn.Height = height;
                         stackPanel.Children.Add(newBtn);
                     }
                 }
             });
-        }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Reikia implementuoti ataką! :)");
-            /*Button button = (Button)sender;
-            int content = Convert.ToInt32(button.Content);
-            switch (content)
-            {
-                case 1:
-                    //do something for the first button
-                    break;
-                case 2:
-                    //do something for the second button...
-                    break;
-            }*/
         }
         public void AssignPlayers(GameModel gameModel)
         {

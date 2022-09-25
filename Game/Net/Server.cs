@@ -17,6 +17,7 @@ namespace GameClient.Net
         public event Action messageReceivedEvent;
         public event Action userDisconnectedEvent;
         public event Action startGameEvent; // Pradedamas žaidimas
+        public event Action attackEnemyTile;
         public Server()
         {
             _client = new TcpClient();
@@ -58,6 +59,9 @@ namespace GameClient.Net
                         case 15:
                             startGameEvent?.Invoke();
                             break;
+                        case 20:
+                            attackEnemyTile?.Invoke();
+                            break;
                         default:
                             Console.WriteLine("ah yes...");
                             break;
@@ -80,5 +84,14 @@ namespace GameClient.Net
             newGamePacket.WriteMessage("Naujas žaidimas");
             _client.Client.Send(newGamePacket.GetPacketBytes());
         }
+        
+        public void AttackEnemyTileToServer(string buttonName)
+        {
+            var attackPacket = new PacketBuilder();
+            attackPacket.WriteOpCode(20);
+            attackPacket.WriteMessage(buttonName);
+            _client.Client.Send(attackPacket.GetPacketBytes());
+        }
+
     }
 }

@@ -77,5 +77,16 @@ namespace GameSever
             }
             BroadcastMessage($"Žaidimas prasidėjo!");
         }
+        public static void BroadcastTileAttack(string tileName)
+        {
+            foreach (var user in _users)
+            {
+                var attackPacket = new PacketBuilder();
+                attackPacket.WriteOpCode(20);
+                attackPacket.WriteMessage(tileName);
+                user.ClientSocket.Client.Send(attackPacket.GetPacketBytes());
+            }
+            BroadcastMessage($"Langellis {tileName} atakuotas!");
+        }
     }
 }

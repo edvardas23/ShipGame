@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game" xmlns:viewmodel="clr-namespace:GameClient.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1820">
+        Title="MainWindow" Height="450" Width="910">
+        <!-- Title="MainWindow" Height="900" Width="1820"> -->
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
@@ -77,6 +78,7 @@
             Grid.Column="3"
             Grid.Row="0"
             Name="enemyStackPanel">
+         
         </StackPanel>
 
     </Grid>

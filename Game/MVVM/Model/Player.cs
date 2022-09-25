@@ -10,6 +10,7 @@ namespace GameClient.MVVM.Model
     {
         public string Username { get; set; }
         public string UID { get; set; }
+       
         public Map MyMap { get; set; }
         public Map EnemyMap { get; set; } 
         public Player()
