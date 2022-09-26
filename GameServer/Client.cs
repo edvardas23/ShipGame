@@ -45,7 +45,7 @@ namespace GameServer
                         case 20:
                             var tileAttacked = _packetReader.ReadMessage();
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");
-                            Program.BroadcastTileAttack($"{tileAttacked}");
+                            Program.BroadcastTileAttack($"{tileAttacked}", UID.ToString());
                             break;
                         default:
                             break;
