@@ -81,15 +81,26 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                if (user.UID.ToString() != uid)
+                if (user.UID.ToString() != uid && user.Turn == false )
                 {
                     var attackPacket = new PacketBuilder();
                     attackPacket.WriteOpCode(20);
                     attackPacket.WriteMessage(tileName);
                     user.ClientSocket.Client.Send(attackPacket.GetPacketBytes());
-                }  
-            }
-            BroadcastMessage($"Langellis {tileName} atakuotas!");
+                    BroadcastMessage($"Langellis {tileName} atakuotas!");
+                    user.Turn = true;
+                    break;
+                }
+                else if (user.UID.ToString() != uid && user.Turn == true)
+                {
+                    BroadcastMessage($"ne tavo eile atakuoti");
+                }
+
+            }          
         }
+
+
+           
+        
     }
 }

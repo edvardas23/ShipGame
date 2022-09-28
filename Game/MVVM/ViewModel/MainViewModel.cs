@@ -2,10 +2,12 @@
 using GameClient.MVVM.Core;
 using GameClient.MVVM.Model;
 using GameClient.Net;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
 
 namespace GameClient.MVVM.ViewModel
@@ -71,24 +73,30 @@ namespace GameClient.MVVM.ViewModel
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                
                 var messageString = _server.PacketReader.ReadMessage();
                 string buttonName = messageString.Replace("e", "m");
                 foreach (StackPanel item in MainWindow.AppWindow.myStackPanel.Children)
                 {
                     foreach (Button button in item.Children)
                     {
-                        if(button.Name == buttonName)
-                             button.Background = Brushes.Red;
+                        if (button.Name == buttonName)
+                        {
+                            button.Background = Brushes.Red;
+                        }
                     }
                 }
+
             });  
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            button.Background = Brushes.Red;
-            button.IsEnabled = false;
-            TileName = button.Name;
+               Button button = sender as Button;
+               button.Background = Brushes.Gray;
+             //  button.IsEnabled = false;
+               TileName = button.Name;
+
+        
         }
         private void StartGameEvent()
         {
@@ -146,7 +154,7 @@ namespace GameClient.MVVM.ViewModel
                     stackPanel.HorizontalAlignment = HorizontalAlignment.Left;
                     stackPanel.Orientation = Orientation.Horizontal;
                     MainWindow.AppWindow.enemyStackPanel.Children.Add(stackPanel);
-
+                    
                     for (int j = 0; j < gameSession.MapSize; j++)
                     {
                         Button newBtn = new Button();
@@ -170,6 +178,7 @@ namespace GameClient.MVVM.ViewModel
                     firstPlayer = new Player();
                     firstPlayer.Username = item.Username;
                     firstPlayer.UID = item.UID;
+                  
                     gameModel.firstPlayer = firstPlayer;
                     continue;
                 }
@@ -178,6 +187,7 @@ namespace GameClient.MVVM.ViewModel
                     secondPlayer = new Player();
                     secondPlayer.Username = item.Username;
                     secondPlayer.UID = item.UID;
+              
                     gameModel.secondPlayer = secondPlayer;
                 }
             }

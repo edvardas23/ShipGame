@@ -9,6 +9,7 @@ namespace GameServer
         public string Username { get; set; }
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
+        public bool Turn { get; set; }
 
         PacketReader _packetReader;
         public Client(TcpClient client)
@@ -18,7 +19,7 @@ namespace GameServer
             _packetReader = new PacketReader(ClientSocket.GetStream());
             var opcode = _packetReader.ReadByte();
             Username = _packetReader.ReadMessage();
-
+            Turn = false;
             Console.WriteLine($"[{DateTime.Now}]:Klientas vardu: {Username} prisijungė");
 
             Task.Run(() => Process());
@@ -37,15 +38,17 @@ namespace GameServer
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Gauta žinutė! {msg}");
                             Program.BroadcastMessage($"[{DateTime.Now}]: [{Username}]: {msg}");  
                             break;
-                        case 15:
-                            var gameStartedMessage = _packetReader.ReadMessage();
+                        case 15:  
+                            var gameStartedMessage = _packetReader.ReadMessage(); 
+                            Turn = true;
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Sukurtas žaidimas! {gameStartedMessage}");
                             Program.BroadcastGameStart($"[{DateTime.Now}]: [{Username}]: {gameStartedMessage}");
                             break;
                         case 20:
                             var tileAttacked = _packetReader.ReadMessage();
-                            Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");
                             Program.BroadcastTileAttack($"{tileAttacked}", UID.ToString());
+                            Turn = false;
+                            Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");   
                             break;
                         default:
                             break;

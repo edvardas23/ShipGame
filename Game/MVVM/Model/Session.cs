@@ -11,7 +11,7 @@ namespace GameClient.MVVM.Model
         private static Session _instance = null;
         public int MapSize { get; set; }
         //public static Map myMap;
-        public Session()
+        private Session()
         {
             
         }

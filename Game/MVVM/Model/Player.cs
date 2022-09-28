@@ -13,6 +13,8 @@ namespace GameClient.MVVM.Model
        
         public Map MyMap { get; set; }
         public Map EnemyMap { get; set; } 
+        
+
         public Player()
         {
 
