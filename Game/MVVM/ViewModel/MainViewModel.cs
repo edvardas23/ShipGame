@@ -1,8 +1,10 @@
 ﻿using Game;
 using GameClient.MVVM.Core;
 using GameClient.MVVM.Model;
+using GameClient.MVVM.Model.TileModels;
 using GameClient.Net;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -29,6 +31,8 @@ namespace GameClient.MVVM.ViewModel
 
         public string Message { get; set; }
         public string Username { get; set; }
+
+        public List<Tile> TilesList = new List<Tile>();
         public MainViewModel()
         {
             
@@ -89,7 +93,7 @@ namespace GameClient.MVVM.ViewModel
 
             });  
         }
-        // ...
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -108,11 +112,11 @@ namespace GameClient.MVVM.ViewModel
             gameModel = new GameModel();
             gameModel.IsGameStarted = true;
             AssignPlayers(gameModel);
-            Map myMap = new Map(gameSession.MapSize);
+            Map myMap = new Map(gameSession.MapSize, TilesList);
             firstPlayer.MyMap = myMap;
             secondPlayer.MyMap = myMap;
-            firstPlayer.EnemyMap = secondPlayer.MyMap;
-            secondPlayer.EnemyMap = firstPlayer.MyMap;
+            firstPlayer.SetEnemy(secondPlayer);
+            secondPlayer.SetEnemy(firstPlayer);
             GenerateEnemyMap(gameSession);
 
         }
@@ -133,13 +137,16 @@ namespace GameClient.MVVM.ViewModel
                     for (int j = 0; j < gameSession.MapSize; j++)
                     {
                         Button newBtn = new Button();
-                        newBtn.Content = "m" + i.ToString() + j.ToString();
+                        newBtn.Content =  i.ToString() + j.ToString();
                         newBtn.Name = "m" + i.ToString() + j.ToString();
+                        Tile tile = new Tile(i, j);
                         newBtn.Width = width;
                         newBtn.Height = height;
                         System.Diagnostics.Debug.WriteLine(newBtn.Parent);
                         stackPanel.Children.Add(newBtn);
+                        TilesList.Add(tile);
                     }
+                    
                 }
             });
         }
