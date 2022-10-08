@@ -89,6 +89,8 @@ namespace GameClient.MVVM.ViewModel
 
             });  
         }
+        // ...
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
                Button button = sender as Button;
