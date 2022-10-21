@@ -8,25 +8,40 @@ namespace GameClient.MVVM.Model.ShotModels
 {
     class ShootStrategy
     {
-        public interface IStrategy
-        {
-            object Damage(object data);
-        }
+        private IStrategy _strategy;
 
-        class ClassicShot : IStrategy
+        public ShootStrategy() { }
+        public ShootStrategy(IStrategy strategy)
         {
-            public object Damage(object data)
-            {
-                return 1;
-            }
+            this._strategy = strategy;
         }
-        class FugueShoot : IStrategy
+        public void SetStrategy(IStrategy strategy)
         {
-            public object Damage(object data)
-            {
-                return 4;
-            }
+            this._strategy = strategy;
         }
+        public int SetDamage()
+        {
+            int dmg = this._strategy.Damage();
+            return dmg;
+        }
+    }
+    public interface IStrategy
+    {
+        int Damage();
+    }
 
+    public class ClassicShot : IStrategy
+    {
+        public int Damage()
+        {
+            return 1;
+        }
+    }
+    public class FugueShoot : IStrategy
+    {
+        public int Damage()
+        {
+            return 4;
+        }
     }
 }

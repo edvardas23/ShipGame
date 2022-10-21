@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Game" xmlns:viewmodel="clr-namespace:GameClient.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="910">
-        <!-- Title="MainWindow" Height="900" Width="1820"> -->
+    <!-- Title="MainWindow" Height="900" Width="1820"> -->
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
@@ -60,7 +60,7 @@
                          VerticalAlignment="Bottom"
                          Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                          />
-                
+
                 <Button Width="55"
                         HorizontalAlignment="Right"
                         Height="55"
@@ -78,8 +78,11 @@
             Grid.Column="3"
             Grid.Row="0"
             Name="enemyStackPanel">
-         
+
         </StackPanel>
+        <Button Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="67,26,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Damage_1" Width="123"/>
+        <Button Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Left" Margin="67,51,0,0" Grid.Row="1" Click="Damage_4" VerticalAlignment="Top"/>
+        <TextBlock Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="67,7,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="123"/>
 
     </Grid>
 </Window>

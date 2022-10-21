@@ -2,6 +2,7 @@
 using GameClient.MVVM.Core;
 using GameClient.MVVM.Model;
 using GameClient.MVVM.Model.TileModels;
+using GameClient.MVVM.Model.ShotModels;
 using GameClient.Net;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,9 @@ namespace GameClient.MVVM.ViewModel
 
         public string Message { get; set; }
         public string Username { get; set; }
+
+        public ShootStrategy shoot { get; set; }
+        
 
         public List<Tile> TilesList = new List<Tile>();
         public MainViewModel()
@@ -118,6 +122,7 @@ namespace GameClient.MVVM.ViewModel
             firstPlayer.SetEnemy(secondPlayer);
             secondPlayer.SetEnemy(firstPlayer);
             GenerateEnemyMap(gameSession);
+        
 
         }
         private void GenerateEmptyMap(Session session)
