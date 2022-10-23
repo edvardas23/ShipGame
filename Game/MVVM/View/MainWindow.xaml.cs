@@ -1,8 +1,10 @@
 ﻿using GameClient.MVVM.Model.ShotModels;
+using GameClient.MVVM.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +43,19 @@ namespace Game
             shoot.SetStrategy(new FugueShoot());
             int dmg = shoot.SetDamage();
             AppWindow.currentDmg.Text = "Dabartine žala - " + dmg.ToString();
+        }
+
+        private void StartNewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            Thread newWindowThread = new Thread(new ThreadStart(() =>
+            {
+                GameMode gameModeWindow = new GameMode();
+                gameModeWindow.Show();
+                System.Windows.Threading.Dispatcher.Run();
+            }));
+            newWindowThread.SetApartmentState(ApartmentState.STA);
+            newWindowThread.IsBackground = true;
+            newWindowThread.Start();
         }
     }
 }

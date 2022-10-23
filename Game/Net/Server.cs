@@ -44,7 +44,14 @@ namespace GameClient.Net
             {
                 while (true)
                 {
-                    var opcode = PacketReader.ReadByte();
+                    //--------------------
+                    var opcode = 0;
+                    try
+                    {
+                        opcode = PacketReader.ReadByte();
+                    }
+                    catch { }
+                    //-------------------- Jei buginsis ištrinti
                     switch (opcode)
                     {
                         case 1:

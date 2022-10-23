@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
+using GameClient.MVVM.View;
+using System.Threading;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -34,12 +36,10 @@ namespace GameClient.MVVM.ViewModel
         public string Username { get; set; }
 
         public ShootStrategy shoot { get; set; }
-        
 
         public List<Tile> TilesList = new List<Tile>();
         public MainViewModel()
         {
-            
             Users = new ObservableCollection<UserModel>();
             Messages = new ObservableCollection<string>();
             _server = new Server();
@@ -49,8 +49,8 @@ namespace GameClient.MVVM.ViewModel
             _server.startGameEvent += StartGameEvent;
             _server.attackEnemyTile += AttackEnemyTile;
             ConnectToSeverCommand = new RelayCommand(o => _server.ConnectToSever(Username), o => !string.IsNullOrEmpty(Username));
-            SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));       
-            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(), o => Users.Count == 2);
+            SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));
+            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(), o => Users.Count >= 2);
             AttackTileCommand = new RelayCommand(o => _server.AttackEnemyTileToServer(TileName));
         }
         private void UserConnected()
@@ -75,13 +75,13 @@ namespace GameClient.MVVM.ViewModel
         {
             var uid = _server.PacketReader.ReadMessage();
             var user = Users.Where(x => x.UID == uid).FirstOrDefault();
-            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));    
+            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
         }
         private void AttackEnemyTile()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                
+
                 var messageString = _server.PacketReader.ReadMessage();
                 string buttonName = messageString.Replace("e", "m");
                 foreach (StackPanel item in MainWindow.AppWindow.myStackPanel.Children)
@@ -95,21 +95,34 @@ namespace GameClient.MVVM.ViewModel
                     }
                 }
 
-            });  
+            });
         }
-        
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-               Button button = sender as Button;
-               button.Background = Brushes.Gray;
-             //  button.IsEnabled = false;
-               TileName = button.Name;
-
-        
+            Button button = sender as Button;
+            button.Background = Brushes.Gray;
+            TileName = button.Name;
         }
+
+       
         private void StartGameEvent()
         {
+            //GameMode.ModeWindow;
+            //await GameMode.ModeWindow.classicModeButton.Click;
+            // --- sukuriame langą  gameMode pasirinkimo
+            /*Thread newWindowThread = new Thread(new ThreadStart(() =>
+            {
+                GameMode gameModeWindow = new GameMode();
+                gameModeWindow.Show();    
+                System.Windows.Threading.Dispatcher.Run();
+            }));
+            newWindowThread.SetApartmentState(ApartmentState.STA);
+            newWindowThread.IsBackground = true;
+            newWindowThread.Start();*/
+            // --- sukuriame langą gameMode pasirinkimo
+
             gameSession = Session.Instance;
             gameSession.MapSize = 10;
             GenerateEmptyMap(gameSession);
@@ -122,8 +135,6 @@ namespace GameClient.MVVM.ViewModel
             firstPlayer.SetEnemy(secondPlayer);
             secondPlayer.SetEnemy(firstPlayer);
             GenerateEnemyMap(gameSession);
-        
-
         }
         private void GenerateEmptyMap(Session session)
         {

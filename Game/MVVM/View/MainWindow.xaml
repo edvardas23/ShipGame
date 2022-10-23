@@ -31,10 +31,10 @@
                     Content="Prisijungti"
                     Command="{Binding ConnectToSeverCommand}"/>
             <Button Height="25"
-                   DockPanel.Dock="Top"
+                    DockPanel.Dock="Top"
                     Name="StartNewGameButton"
                     Content="Pradėti žaidimą"
-                    Command="{Binding StartNewGameCommand}"/>
+                    Command="{Binding StartNewGameCommand}" Click="StartNewGameButton_Click"/>
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
