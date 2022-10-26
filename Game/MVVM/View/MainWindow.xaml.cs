@@ -1,5 +1,6 @@
-﻿using GameClient.MVVM.Model.ShotModels;
-using GameClient.MVVM.View;
+﻿using GameClient.MVVM.Model;
+using GameClient.MVVM.Model.ShotModels;
+using GameClient.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,15 +48,39 @@ namespace Game
 
         private void StartNewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            Thread newWindowThread = new Thread(new ThreadStart(() =>
+            ChangeGameModeButtonsVisibility(true);
+        }
+        private void ChangeGameModeButtonsVisibility(bool visible)
+        {
+            if (visible)
             {
-                GameMode gameModeWindow = new GameMode();
-                gameModeWindow.Show();
-                System.Windows.Threading.Dispatcher.Run();
-            }));
-            newWindowThread.SetApartmentState(ApartmentState.STA);
-            newWindowThread.IsBackground = true;
-            newWindowThread.Start();
+                classicModeButton.Visibility = Visibility.Visible;
+                advancedModeButton.Visibility = Visibility.Visible;
+                turboModeButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                classicModeButton.Visibility = Visibility.Hidden;
+                advancedModeButton.Visibility = Visibility.Hidden;
+                turboModeButton.Visibility = Visibility.Hidden;
+            }
+        }
+        private void classicModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 1;
+        }
+
+        private void advancedModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 2;
+        }
+
+        private void turboModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 3;
         }
     }
 }

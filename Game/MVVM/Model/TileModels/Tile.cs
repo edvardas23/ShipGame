@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace GameClient.MVVM.Model.TileModels
 {
 
-    public enum Content
+    public enum Type
     {
         HIT,
         MISS,
         SHIP,
         EMPTY
     }
-    public class Tile
+    public class Tile : Button
     {
-        public const int XY_MAX_VALUE = 10;
+        //public const int XY_MAX_VALUE = 10;
         public const int XY_MIN_VALUE = 0;
         private int x;
         private int y; 
         public bool destroyable;
         public bool placeable;
 
-        private Content content;
+        private Type content;
 
         public int X
         {
@@ -35,7 +36,7 @@ namespace GameClient.MVVM.Model.TileModels
             get { return y; }
         }
 
-        public Content Content
+        public Type Type
         {
             get { return content; }
             set { content = value; }
@@ -43,15 +44,14 @@ namespace GameClient.MVVM.Model.TileModels
 
         static public bool IsXYValid(int x, int y)
         {
-            return x >= XY_MIN_VALUE && x <= XY_MAX_VALUE &&
-                   y >= XY_MIN_VALUE && y <= XY_MAX_VALUE;
+            return x >= XY_MIN_VALUE && y >= XY_MIN_VALUE;
         }
         public Tile(int x, int y)
         {
             if (!IsXYValid(x, y)) throw new Exception("Invalid xy initialization");
             this.x = x;
             this.y = y;
-            content = Content.EMPTY;
+            content = Type.EMPTY;
         }
         public static bool CompareXY(Tile a, Tile b)
         {

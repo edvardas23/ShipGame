@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model
 {
-    class GameModel
+    public class GameModel
     {
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
