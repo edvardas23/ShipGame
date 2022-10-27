@@ -46,6 +46,7 @@
             </ListView>
         </DockPanel>
         <StackPanel
+            Name="shipsPanel"
             Grid.Row="1">
             <Button Height="25"
                     Name="classicModeButton"

@@ -24,7 +24,7 @@ namespace GameClient.MVVM.Model.UnitModels
 
         public Ship(Unit unit) : base(unit.Tiles)
         {
-            size = unit.Tiles.Count;
+            //size = unit.Tiles.Count;
             hp = unit.Tiles.Count;
         }
         public void TakeDamage()

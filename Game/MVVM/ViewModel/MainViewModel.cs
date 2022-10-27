@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
 using System.Threading;
+using GameClient.MVVM.Model.UnitModels;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -103,6 +104,24 @@ namespace GameClient.MVVM.ViewModel
             tile.Background = Brushes.Gray;
             TileName = tile.Name;
         }
+        //private void PlaceShips(List<Ship> ships)
+        //{
+        //    foreach (var item in ships)
+        //    {
+        //item.Tiles.Add(Tile)
+        //    }
+        //}
+        private void DrawUiForShips(List<Ship> ships)
+        {
+            for (int i = 0; i < ships.Count; i++)
+            {
+                Button btn = new Button();
+                btn.Content = "ship" + i.ToString();
+                btn.Height = 25;
+              
+                MainWindow.AppWindow.shipsPanel.Children.Add(btn);
+            }
+        }
         private void StartGameEvent()
         {
             var messageString = _server.PacketReader.ReadMessage();
@@ -117,7 +136,15 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Klasikinis";
                         Session.Instance.MapSize = 10;
                         GenerateEmptyMap("m");
-                        GenerateEmptyMap("e");
+                        List<Ship> ships = new List<Ship>();
+                        Unit unit = new Unit(new List<Tile>(3));
+                        Ship ship = new Ship(unit);
+                        ships.Add(ship);
+                        ships.Add(ship);
+                        DrawUiForShips(ships);
+                        //PlaceShips(ships);
+                        //Ship ship = new Ship();
+                        //GenerateEmptyMap("e");
                     });
                     break;
                 case 2:
@@ -126,7 +153,7 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Papildytas";
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
-                        GenerateEmptyMap("e");
+                        //GenerateEmptyMap("e");
                     });
                     break;
                 case 3:
@@ -135,27 +162,13 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Turbo";
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
-                        GenerateEmptyMap("e");
+                        //GenerateEmptyMap("e");
                     });
                     break;
                 default:
                     MessageBox.Show("Neveikia :)");
                     break;
             }
-            
-            //gameSession = Session.Instance;
-            //gameSession.MapSize = 10;
-            //GenerateEmptyMap();
-            //GenerateEnemyMap();
-            /*gameModel = new GameModel();
-            gameModel.IsGameStarted = true;
-            AssignPlayers(gameModel);
-            Map myMap = new Map(gameSession.MapSize, TilesList);
-            firstPlayer.MyMap = myMap;
-            secondPlayer.MyMap = myMap;
-            firstPlayer.SetEnemy(secondPlayer);
-            secondPlayer.SetEnemy(firstPlayer);
-            GenerateEnemyMap(gameSession);*/
         }
         private void GenerateEmptyMap(string identifier)
         {
@@ -179,9 +192,15 @@ namespace GameClient.MVVM.ViewModel
                         tile.Name = identifier + i.ToString() + j.ToString();
                         tile.Width = width;
                         tile.Height = height;
-                        tile.Click += Button_Click;
                         if (identifier.Equals("e"))
+                        {
                             tile.Command = AttackTileCommand;
+                            tile.Click += Button_Click;
+                        }
+                        else
+                        {
+                            
+                        }
                         System.Diagnostics.Debug.WriteLine(tile.Parent);
                         newStackPanel.Children.Add(tile);
                         TilesList.Add(tile);
