@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model
 {
-    class Session
+    public class Session
     {
         private static Session _instance = null;
         public int MapSize { get; set; }
+        public int GameModeType { get; set; }
         //public static Map myMap;
         private Session()
         {

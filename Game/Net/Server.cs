@@ -44,7 +44,15 @@ namespace GameClient.Net
             {
                 while (true)
                 {
-                    var opcode = PacketReader.ReadByte();
+                    //--------------------
+                    var opcode = 0;
+                    var message = "";
+                    try
+                    {
+                        opcode = PacketReader.ReadByte();
+                    }
+                    catch { }
+                    //-------------------- Jei buginsis ištrinti
                     switch (opcode)
                     {
                         case 1:
@@ -77,11 +85,11 @@ namespace GameClient.Net
             _client.Client.Send(messagePacket.GetPacketBytes());
 
         }
-        public void StartNewGameOnServer()
+        public void StartNewGameOnServer(int GameModeType)
         {
             var newGamePacket = new PacketBuilder();
             newGamePacket.WriteOpCode(15);
-            newGamePacket.WriteMessage("Naujas žaidimas");
+            newGamePacket.WriteMessage("Naujas žaidimas" + GameModeType.ToString());
             _client.Client.Send(newGamePacket.GetPacketBytes());
         }
         

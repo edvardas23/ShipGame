@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.ShotModels
 {
-    class ShootStrategy
+    public class ShootStrategy
     {
         private IStrategy _strategy;
 

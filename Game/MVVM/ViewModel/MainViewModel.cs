@@ -12,34 +12,30 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
+using System.Threading;
 
 namespace GameClient.MVVM.ViewModel
 {
-    class MainViewModel
+    public class MainViewModel
     {
         public ObservableCollection<UserModel> Users { get; set; }
         public ObservableCollection<string> Messages { get; set; }
         public RelayCommand ConnectToSeverCommand { get; set; }
-        public Session gameSession { get; set; }
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand StartNewGameCommand { get; set; }
+        public RelayCommand ReadyForGameCommand { get; set; }
         public RelayCommand AttackTileCommand { get; set; }
         private Server _server;
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
-        public GameModel gameModel { get; set; }
         public string TileName { get; set; }
-
         public string Message { get; set; }
         public string Username { get; set; }
-
         public ShootStrategy shoot { get; set; }
-        
 
         public List<Tile> TilesList = new List<Tile>();
         public MainViewModel()
         {
-            
             Users = new ObservableCollection<UserModel>();
             Messages = new ObservableCollection<string>();
             _server = new Server();
@@ -49,8 +45,9 @@ namespace GameClient.MVVM.ViewModel
             _server.startGameEvent += StartGameEvent;
             _server.attackEnemyTile += AttackEnemyTile;
             ConnectToSeverCommand = new RelayCommand(o => _server.ConnectToSever(Username), o => !string.IsNullOrEmpty(Username));
-            SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));       
-            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(), o => Users.Count == 2);
+            SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));
+            //ReadyForGameCommand = new RelayCommand() TODO
+            StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(Session.Instance.GameModeType));
             AttackTileCommand = new RelayCommand(o => _server.AttackEnemyTileToServer(TileName));
         }
         private void UserConnected()
@@ -65,6 +62,7 @@ namespace GameClient.MVVM.ViewModel
             {
                 Application.Current.Dispatcher.Invoke(() => Users.Add(user));
             }
+            CheckUsers();
         }
         private void MessageReceived()
         {
@@ -75,45 +73,81 @@ namespace GameClient.MVVM.ViewModel
         {
             var uid = _server.PacketReader.ReadMessage();
             var user = Users.Where(x => x.UID == uid).FirstOrDefault();
-            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));    
+            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
+            CheckUsers();
         }
         private void AttackEnemyTile()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                
+
                 var messageString = _server.PacketReader.ReadMessage();
                 string buttonName = messageString.Replace("e", "m");
-                foreach (StackPanel item in MainWindow.AppWindow.myStackPanel.Children)
+                foreach (StackPanel item in MainWindow.AppWindow.mStackPanel.Children)
                 {
-                    foreach (Button button in item.Children)
+                    foreach (Tile tile in item.Children)
                     {
-                        if (button.Name == buttonName)
+                        if (tile.Name == buttonName)
                         {
-                            button.Background = Brushes.Red;
+                            tile.Background = Brushes.Red;
                         }
                     }
                 }
 
-            });  
+            });
         }
-        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-               Button button = sender as Button;
-               button.Background = Brushes.Gray;
-             //  button.IsEnabled = false;
-               TileName = button.Name;
-
-        
+            Tile tile = sender as Tile;
+            tile.Background = Brushes.Gray;
+            TileName = tile.Name;
         }
         private void StartGameEvent()
         {
-            gameSession = Session.Instance;
-            gameSession.MapSize = 10;
-            GenerateEmptyMap(gameSession);
-            gameModel = new GameModel();
+            var messageString = _server.PacketReader.ReadMessage();
+            messageString = messageString.Substring(messageString.Length - 1);
+            Session.Instance.GameModeType = int.Parse(messageString);
+
+            switch (Session.Instance.GameModeType)
+            {
+                case 1:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainWindow.AppWindow.currentDmg.Text = "Klasikinis";
+                        Session.Instance.MapSize = 10;
+                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("e");
+                    });
+                    break;
+                case 2:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainWindow.AppWindow.currentDmg.Text = "Papildytas";
+                        Session.Instance.MapSize = 15;
+                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("e");
+                    });
+                    break;
+                case 3:
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainWindow.AppWindow.currentDmg.Text = "Turbo";
+                        Session.Instance.MapSize = 20;
+                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("e");
+                    });
+                    break;
+                default:
+                    MessageBox.Show("Neveikia :)");
+                    break;
+            }
+            
+            //gameSession = Session.Instance;
+            //gameSession.MapSize = 10;
+            //GenerateEmptyMap();
+            //GenerateEnemyMap();
+            /*gameModel = new GameModel();
             gameModel.IsGameStarted = true;
             AssignPlayers(gameModel);
             Map myMap = new Map(gameSession.MapSize, TilesList);
@@ -121,64 +155,36 @@ namespace GameClient.MVVM.ViewModel
             secondPlayer.MyMap = myMap;
             firstPlayer.SetEnemy(secondPlayer);
             secondPlayer.SetEnemy(firstPlayer);
-            GenerateEnemyMap(gameSession);
-        
-
+            GenerateEnemyMap(gameSession);*/
         }
-        private void GenerateEmptyMap(Session session)
+        private void GenerateEmptyMap(string identifier)
         {
             MainWindow.AppWindow.Dispatcher.Invoke(() =>
             {
-                double width = MainWindow.AppWindow.myStackPanel.ActualWidth / gameSession.MapSize;
-                double height = MainWindow.AppWindow.myStackPanel.ActualHeight / gameSession.MapSize;
-                for (int i = 0; i < gameSession.MapSize; i++)
+                StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
+                double width = stackPanel.ActualWidth / Session.Instance.MapSize;
+                double height = stackPanel.ActualHeight / Session.Instance.MapSize;
+                for (int i = 0; i < Session.Instance.MapSize; i++)
                 {
-                    StackPanel stackPanel = new StackPanel();
-                    stackPanel.Name = "stackPanel" + i.ToString();
-                    stackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                    stackPanel.Orientation = Orientation.Horizontal;
-                    MainWindow.AppWindow.myStackPanel.Children.Add(stackPanel);
+                    StackPanel newStackPanel = new StackPanel();
+                    newStackPanel.Name = identifier + "StackPanel" + i.ToString();
+                    newStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                    newStackPanel.Orientation = Orientation.Horizontal;
+                    stackPanel.Children.Add(newStackPanel);
 
-                    for (int j = 0; j < gameSession.MapSize; j++)
+                    for (int j = 0; j < Session.Instance.MapSize; j++)
                     {
-                        Button newBtn = new Button();
-                        newBtn.Content =  i.ToString() + j.ToString();
-                        newBtn.Name = "m" + i.ToString() + j.ToString();
                         Tile tile = new Tile(i, j);
-                        newBtn.Width = width;
-                        newBtn.Height = height;
-                        System.Diagnostics.Debug.WriteLine(newBtn.Parent);
-                        stackPanel.Children.Add(newBtn);
+                        //tile.Content = identifier + i.ToString() + j.ToString();
+                        tile.Name = identifier + i.ToString() + j.ToString();
+                        tile.Width = width;
+                        tile.Height = height;
+                        tile.Click += Button_Click;
+                        if (identifier.Equals("e"))
+                            tile.Command = AttackTileCommand;
+                        System.Diagnostics.Debug.WriteLine(tile.Parent);
+                        newStackPanel.Children.Add(tile);
                         TilesList.Add(tile);
-                    }
-                    
-                }
-            });
-        }
-        private void GenerateEnemyMap(Session session)
-        {
-            MainWindow.AppWindow.Dispatcher.Invoke(() =>
-            {
-                double width = MainWindow.AppWindow.enemyStackPanel.ActualWidth / gameSession.MapSize;
-                double height = MainWindow.AppWindow.enemyStackPanel.ActualHeight / gameSession.MapSize;
-                for (int i = 0; i < gameSession.MapSize; i++)
-                {
-                    StackPanel stackPanel = new StackPanel();
-                    stackPanel.Name = "eStackPanel" + i.ToString();
-                    stackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                    stackPanel.Orientation = Orientation.Horizontal;
-                    MainWindow.AppWindow.enemyStackPanel.Children.Add(stackPanel);
-                    
-                    for (int j = 0; j < gameSession.MapSize; j++)
-                    {
-                        Button newBtn = new Button();
-                        newBtn.Content = "e" + i.ToString() + j.ToString();
-                        newBtn.Name = "e" + i.ToString() + j.ToString();
-                        newBtn.Click  += Button_Click;
-                        newBtn.Command = AttackTileCommand;
-                        newBtn.Width = width;
-                        newBtn.Height = height;
-                        stackPanel.Children.Add(newBtn);
                     }
                 }
             });
@@ -205,6 +211,20 @@ namespace GameClient.MVVM.ViewModel
                     gameModel.secondPlayer = secondPlayer;
                 }
             }
+        }
+        private void CheckUsers()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {   
+                if (Users.Count >= 2)
+                {
+                    MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
+                }
+                else
+                {
+                    MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
+                }
+            });
         }
     }
 }

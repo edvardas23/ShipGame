@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model
 {
-    class Player
+    public class Player
     {
         public string Username { get; set; }
         public string UID { get; set; }

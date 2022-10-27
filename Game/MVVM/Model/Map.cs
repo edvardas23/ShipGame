@@ -106,9 +106,9 @@ namespace GameClient.MVVM.Model
         bool IEnemy.TakeShot(Tile shotTile)
         {
             //visur kur grid yra, mum reiks tai paverst i buttonu lokacijas
-            if (grid[shotTile.Y - 1][shotTile.X - 1].Content == Content.SHIP)
+            if (grid[shotTile.Y - 1][shotTile.X - 1].Type == Type.SHIP)
             {
-                grid[shotTile.Y - 1][shotTile.X - 1].Content = Content.HIT;
+                grid[shotTile.Y - 1][shotTile.X - 1].Type = Type.HIT;
 
                 foreach (Ship ship in ships)
                 {
@@ -124,7 +124,7 @@ namespace GameClient.MVVM.Model
                 }
             }
 
-            grid[shotTile.Y - 1][shotTile.X - 1].Content = Content.MISS;
+            grid[shotTile.Y - 1][shotTile.X - 1].Content = Type.MISS;
             return false;
 
         }

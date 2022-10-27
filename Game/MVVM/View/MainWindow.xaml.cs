@@ -1,8 +1,11 @@
-﻿using GameClient.MVVM.Model.ShotModels;
+﻿using GameClient.MVVM.Model;
+using GameClient.MVVM.Model.ShotModels;
+using GameClient.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +44,43 @@ namespace Game
             shoot.SetStrategy(new FugueShoot());
             int dmg = shoot.SetDamage();
             AppWindow.currentDmg.Text = "Dabartine žala - " + dmg.ToString();
+        }
+
+        private void StartNewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(true);
+        }
+        private void ChangeGameModeButtonsVisibility(bool visible)
+        {
+            if (visible)
+            {
+                classicModeButton.Visibility = Visibility.Visible;
+                advancedModeButton.Visibility = Visibility.Visible;
+                turboModeButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                classicModeButton.Visibility = Visibility.Hidden;
+                advancedModeButton.Visibility = Visibility.Hidden;
+                turboModeButton.Visibility = Visibility.Hidden;
+            }
+        }
+        private void classicModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 1;
+        }
+
+        private void advancedModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 2;
+        }
+
+        private void turboModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeGameModeButtonsVisibility(false);
+            Session.Instance.GameModeType = 3;
         }
     }
 }
