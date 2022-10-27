@@ -35,6 +35,8 @@ namespace GameClient.MVVM.ViewModel
         public ShootStrategy shoot { get; set; }
 
         public List<Tile> TilesList = new List<Tile>();
+
+        public List<Ship> ShipList = new List<Ship>();
         public MainViewModel()
         {
             Users = new ObservableCollection<UserModel>();
@@ -111,6 +113,7 @@ namespace GameClient.MVVM.ViewModel
         //item.Tiles.Add(Tile)
         //    }
         //}
+
         private void DrawUiForShips(List<Ship> ships)
         {
             for (int i = 0; i < ships.Count; i++)
@@ -118,7 +121,7 @@ namespace GameClient.MVVM.ViewModel
                 Button btn = new Button();
                 btn.Content = "ship" + i.ToString();
                 btn.Height = 25;
-              
+
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
             }
         }
@@ -172,6 +175,15 @@ namespace GameClient.MVVM.ViewModel
         }
         private void GenerateEmptyMap(string identifier)
         {
+            Random rnd = new Random();
+            string[] array = new string[10]; 
+            for (int i = 0; i < 10; i++)
+            {
+                int x = rnd.Next(0, 9);
+                int y = rnd.Next(0, 9);
+                array[i] = x.ToString() + y.ToString();
+            }
+
             MainWindow.AppWindow.Dispatcher.Invoke(() =>
             {
                 StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
@@ -192,6 +204,7 @@ namespace GameClient.MVVM.ViewModel
                         tile.Name = identifier + i.ToString() + j.ToString();
                         tile.Width = width;
                         tile.Height = height;
+
                         if (identifier.Equals("e"))
                         {
                             tile.Command = AttackTileCommand;
@@ -199,7 +212,13 @@ namespace GameClient.MVVM.ViewModel
                         }
                         else
                         {
-                            
+                            for (int k = 0; k < 10; k++)
+                            {
+                                if(i.ToString()+j.ToString() == array[k])
+                                {
+                                    tile.Background = Brushes.Green;
+                                }
+                            }
                         }
                         System.Diagnostics.Debug.WriteLine(tile.Parent);
                         newStackPanel.Children.Add(tile);
@@ -217,7 +236,7 @@ namespace GameClient.MVVM.ViewModel
                     firstPlayer = new Player();
                     firstPlayer.Username = item.Username;
                     firstPlayer.UID = item.UID;
-                  
+
                     gameModel.firstPlayer = firstPlayer;
                     continue;
                 }
@@ -226,7 +245,7 @@ namespace GameClient.MVVM.ViewModel
                     secondPlayer = new Player();
                     secondPlayer.Username = item.Username;
                     secondPlayer.UID = item.UID;
-              
+
                     gameModel.secondPlayer = secondPlayer;
                 }
             }
@@ -234,7 +253,7 @@ namespace GameClient.MVVM.ViewModel
         private void CheckUsers()
         {
             Application.Current.Dispatcher.Invoke(() =>
-            {   
+            {
                 if (Users.Count >= 2)
                 {
                     MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
@@ -245,5 +264,28 @@ namespace GameClient.MVVM.ViewModel
                 }
             });
         }
+
+        //private void GenerateRandomShips(object sender, RoutedEventArgs e)
+        //{
+        //    Random rnd = new Random();
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        int x = rnd.Next(0, 99);
+        //        int y = rnd.Next(0, 99);
+        //        Tile ShipTile = new Tile(x, y);
+        //        ShipTile.Name = "m" + x.ToString() + y.ToString();
+        //        DrawTiles(ShipTile);
+        //    }
+
+        //}
+        //private void DrawTiles(Tile tile)
+        //{
+        //    MainWindow.AppWindow.Dispatcher.Invoke(() =>
+        //    {
+        //        Tile found = (Tile)MainWindow.AppWindow.mStackPanel;
+        //        found.Background = Brushes.Green;
+        //    });
+
+        //}
     }
 }

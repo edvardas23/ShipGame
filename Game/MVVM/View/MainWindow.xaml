@@ -111,9 +111,10 @@
 
         </StackPanel>
 
-        <Button Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="67,103,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Damage_1" Width="123"/>
-        <Button Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Left" Margin="67,144,0,0" Grid.Row="1" Click="Damage_4" VerticalAlignment="Top"/>
-        <TextBlock Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="67,179,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="123"/>
+        <Button Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="67,139,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Damage_1" Width="123"/>
+        <Button Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Left" Margin="67,164,0,0" Grid.Row="1" Click="Damage_4" VerticalAlignment="Top"/>
+        <TextBlock Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="67,189,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="123"/>
+     
 
     </Grid>
 </Window>

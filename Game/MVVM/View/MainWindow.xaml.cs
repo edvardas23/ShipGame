@@ -1,5 +1,6 @@
 ﻿using GameClient.MVVM.Model;
 using GameClient.MVVM.Model.ShotModels;
+using GameClient.MVVM.Model.TileModels;
 using GameClient.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -82,5 +83,6 @@ namespace Game
             ChangeGameModeButtonsVisibility(false);
             Session.Instance.GameModeType = 3;
         }
+
     }
 }
