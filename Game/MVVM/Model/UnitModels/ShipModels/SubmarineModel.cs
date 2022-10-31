@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.UnitModels.ShipModels
 {
-    public class SubmarineModel : Ship
+    class SubmarineModel : Ship
     {
         private int specialAbility;
         private int isSubmerged;
+        private string name = "Submarine";
 
         public int SpecialAbility
         {
@@ -26,6 +27,11 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             this.specialAbility = SpecialAbility;
             this.isSubmerged = IsSubmerged;
         }
+
+        public SubmarineModel()
+        {
+        }
+
         public void UseSpecialAbility()
         {
 

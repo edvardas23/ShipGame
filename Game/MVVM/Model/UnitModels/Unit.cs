@@ -21,5 +21,6 @@ namespace GameClient.MVVM.Model.UnitModels
         {
             this.tiles = tiles;
         }
+        public Unit() { }
     }
 }

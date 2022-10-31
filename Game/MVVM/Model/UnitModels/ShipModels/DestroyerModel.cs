@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.UnitModels.ShipModels
 {
-    public class DestroyerModel : Ship
+    class DestroyerModel : Ship
     {
         private int specialAbility;
+        private string name = "Destroyer";
 
         public int SpecialAbility
         {
@@ -19,6 +20,11 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         {
             this.specialAbility = SpecialAbility;
         }
+
+        public DestroyerModel() : base()
+        {
+        }
+
         public void UseSpecialAbility()
         {
 

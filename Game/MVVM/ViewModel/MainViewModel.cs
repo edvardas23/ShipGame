@@ -14,6 +14,8 @@ using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
 using System.Threading;
 using GameClient.MVVM.Model.UnitModels;
+using GameClient.MVVM.Model.UnitModels.ShipModels;
+using System.CodeDom;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -37,6 +39,7 @@ namespace GameClient.MVVM.ViewModel
         public List<Tile> TilesList = new List<Tile>();
 
         public List<Ship> ShipList = new List<Ship>();
+
         public MainViewModel()
         {
             Users = new ObservableCollection<UserModel>();
@@ -114,17 +117,45 @@ namespace GameClient.MVVM.ViewModel
         //    }
         //}
 
-        private void DrawUiForShips(List<Ship> ships)
+        private void DrawUiForShips(string gameMode)
         {
-            for (int i = 0; i < ships.Count; i++)
+            AbstractFactory abstr = new AbstractListFactory();
+            List<Ship> listOfShips = abstr.GetShipsList(gameMode);
+
+            for (int i = 0; i < listOfShips.Count(); i++)
             {
                 Button btn = new Button();
-                btn.Content = "ship" + i.ToString();
-                btn.Height = 25;
+                if (listOfShips[i] is BattleshipModel)
+                {
+                    btn.Content = "Battleship";
+                    btn.Height = 25;
+                }
+                else if (listOfShips[i] is CarrierModel)
+                {
+                    btn.Content = "Carrier";
+                    btn.Height = 25;
+                }
+                else if (listOfShips[i] is DestroyerModel)
+                {
+                    btn.Content = "Destroyer";
+                    btn.Height = 25;
+                }
+                else if (listOfShips[i] is PatrolBoatModel)
+                {
+                    btn.Content = "Patrol Boat";
+                    btn.Height = 25;
+                }
+                else
+                {
+                    btn.Content = "Submarine";
+                    btn.Height = 25;
+                }
 
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
             }
+
         }
+
         private void StartGameEvent()
         {
             var messageString = _server.PacketReader.ReadMessage();
@@ -144,7 +175,7 @@ namespace GameClient.MVVM.ViewModel
                         Ship ship = new Ship(unit);
                         ships.Add(ship);
                         ships.Add(ship);
-                        DrawUiForShips(ships);
+                        DrawUiForShips("Klasikinis");
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
                         //GenerateEmptyMap("e");
@@ -156,6 +187,7 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Papildytas";
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
+                        DrawUiForShips("Papildytas");
                         //GenerateEmptyMap("e");
                     });
                     break;
@@ -165,6 +197,7 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Turbo";
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
+                        DrawUiForShips("Turbo");
                         //GenerateEmptyMap("e");
                     });
                     break;
@@ -199,30 +232,66 @@ namespace GameClient.MVVM.ViewModel
 
                     for (int j = 0; j < Session.Instance.MapSize; j++)
                     {
-                        Tile tile = new Tile(i, j);
-                        //tile.Content = identifier + i.ToString() + j.ToString();
-                        tile.Name = identifier + i.ToString() + j.ToString();
-                        tile.Width = width;
-                        tile.Height = height;
-
-                        if (identifier.Equals("e"))
+                        Random rnd = new Random();
+                        int rand = rnd.Next(1, 50); 
+                        if (rand >= 48)
                         {
-                            tile.Command = AttackTileCommand;
-                            tile.Click += Button_Click;
+                            Tile tile = new Tile(i, j);
+                            RockTile rockTile = new RockTile(tile);
+                            rockTile.Background = Brushes.Olive;
+                            rockTile.placeable = false;
+                            rockTile.Name = identifier + i.ToString() + j.ToString();
+                            rockTile.Width = width;
+                            rockTile.Height = height;
+
+                            if (identifier.Equals("e"))
+                            {
+                                rockTile.Command = AttackTileCommand;
+                                rockTile.Click += Button_Click;
+                            }
+                            else
+                            {
+                                for (int k = 0; k < 10; k++)
+                                {
+                                    if (i.ToString() + j.ToString() == array[k])
+                                    {
+                                        rockTile.Background = Brushes.Green;
+                                    }
+                                }
+                            }
+
+                            System.Diagnostics.Debug.WriteLine(rockTile.Parent);
+                            newStackPanel.Children.Add(rockTile);
+                            TilesList.Add(rockTile);
                         }
                         else
                         {
-                            for (int k = 0; k < 10; k++)
+                            Tile tile = new Tile(i, j);
+                            //tile.Content = identifier + i.ToString() + j.ToString();
+                            tile.Name = identifier + i.ToString() + j.ToString();
+                            tile.Width = width;
+                            tile.Height = height;
+
+                            if (identifier.Equals("e"))
                             {
-                                if(i.ToString()+j.ToString() == array[k])
+                                tile.Command = AttackTileCommand;
+                                tile.Click += Button_Click;
+                            }
+                            else
+                            {
+                                for (int k = 0; k < 10; k++)
                                 {
-                                    tile.Background = Brushes.Green;
+                                    if (i.ToString() + j.ToString() == array[k])
+                                    {
+                                        tile.Background = Brushes.Green;
+                                    }
                                 }
                             }
+
+                            System.Diagnostics.Debug.WriteLine(tile.Parent);
+                            newStackPanel.Children.Add(tile);
+                            TilesList.Add(tile);
                         }
-                        System.Diagnostics.Debug.WriteLine(tile.Parent);
-                        newStackPanel.Children.Add(tile);
-                        TilesList.Add(tile);
                     }
                 }
             });

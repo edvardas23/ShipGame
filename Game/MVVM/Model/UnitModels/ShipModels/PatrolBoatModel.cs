@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.UnitModels.ShipModels
 {
-    public class PatrolNoatModel : Ship
+    class PatrolBoatModel : Ship
     {
         private int specialAbility;
+        private string name = "Patrol Boat";
 
         public int SpecialAbility
         {
             get { return specialAbility; }
         }
 
-        public PatrolNoatModel(Ship ship) : base(ship)
+        public PatrolBoatModel(Ship ship) : base(ship)
         {
             this.specialAbility = SpecialAbility;
         }
+
+        public PatrolBoatModel()
+        {
+        }
+
         public void UseSpecialAbility()
         {
 

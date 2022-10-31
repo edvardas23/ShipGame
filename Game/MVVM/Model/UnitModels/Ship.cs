@@ -27,6 +27,7 @@ namespace GameClient.MVVM.Model.UnitModels
             size = unit.Tiles.Count;
             hp = unit.Tiles.Count;
         }
+        public Ship() { }
         public void TakeDamage()
         {
             if (hp > 0) hp--;
