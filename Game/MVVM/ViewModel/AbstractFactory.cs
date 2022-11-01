@@ -20,24 +20,24 @@ namespace GameClient.MVVM.ViewModel
         public abstract Ship CreatePatrol();
         public abstract Ship CreateSubmarine();
 
-        public List<Ship> GetShipsList(string gameMode)
+        public List<Ship> GetShipsList()
         {
-            switch(gameMode)
+            switch(Session.Instance.GameModeType)
             {
-                case "Klasikinis":
+                case 1:
                     Ships.Add(CreateBattleship());
                     Ships.Add(CreateCarrier());
                     Ships.Add(CreateDestroyer());
                     Ships.Add(CreatePatrol());
                     break;
-                case "Papildytas":
+                case 2:
                     Ships.Add(CreateBattleship());
                     Ships.Add(CreateCarrier());
                     Ships.Add(CreateDestroyer());
                     Ships.Add(CreatePatrol());
                     Ships.Add(CreateSubmarine());
                     break;
-                case "Turbo":
+                case 3:
                     Ships.Add(CreateBattleship());
                     Ships.Add(CreateCarrier());
                     Ships.Add(CreateDestroyer());

@@ -16,11 +16,14 @@ using System.Threading;
 using GameClient.MVVM.Model.UnitModels;
 using GameClient.MVVM.Model.UnitModels.ShipModels;
 using System.CodeDom;
+using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
 namespace GameClient.MVVM.ViewModel
 {
     public class MainViewModel
     {
+        public Ship currentShip { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
         public ObservableCollection<string> Messages { get; set; }
         public RelayCommand ConnectToSeverCommand { get; set; }
@@ -109,6 +112,12 @@ namespace GameClient.MVVM.ViewModel
             tile.Background = Brushes.Gray;
             TileName = tile.Name;
         }
+        private void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            //currentShip = new Ship();
+            MessageBox.Show(currentShip.GetType().ToString());
+            //currentShip.Size
+        }
         //private void PlaceShips(List<Ship> ships)
         //{
         //    foreach (var item in ships)
@@ -117,10 +126,10 @@ namespace GameClient.MVVM.ViewModel
         //    }
         //}
 
-        private void DrawUiForShips(string gameMode)
+        private void DrawUiForShips()
         {
             AbstractFactory abstr = new AbstractListFactory();
-            List<Ship> listOfShips = abstr.GetShipsList(gameMode);
+            List<Ship> listOfShips = abstr.GetShipsList();
 
             for (int i = 0; i < listOfShips.Count(); i++)
             {
@@ -128,26 +137,32 @@ namespace GameClient.MVVM.ViewModel
                 if (listOfShips[i] is BattleshipModel)
                 {
                     btn.Content = "Battleship";
+                    currentShip = new BattleshipModel();
+                    btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is CarrierModel)
                 {
                     btn.Content = "Carrier";
+                    currentShip = new CarrierModel();
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is DestroyerModel)
                 {
                     btn.Content = "Destroyer";
+                    currentShip = new DestroyerModel();
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is PatrolBoatModel)
                 {
                     btn.Content = "Patrol Boat";
+                    currentShip = new PatrolBoatModel();
                     btn.Height = 25;
                 }
                 else
                 {
                     btn.Content = "Submarine";
+                    currentShip = new SubmarineModel();
                     btn.Height = 25;
                 }
 
@@ -175,7 +190,7 @@ namespace GameClient.MVVM.ViewModel
                         Ship ship = new Ship(unit);
                         ships.Add(ship);
                         ships.Add(ship);
-                        DrawUiForShips("Klasikinis");
+                        DrawUiForShips();
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
                         //GenerateEmptyMap("e");
@@ -187,7 +202,7 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Papildytas";
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
-                        DrawUiForShips("Papildytas");
+                        DrawUiForShips();
                         //GenerateEmptyMap("e");
                     });
                     break;
@@ -197,7 +212,7 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentDmg.Text = "Turbo";
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
-                        DrawUiForShips("Turbo");
+                        DrawUiForShips();
                         //GenerateEmptyMap("e");
                     });
                     break;
@@ -248,16 +263,6 @@ namespace GameClient.MVVM.ViewModel
                             {
                                 rockTile.Command = AttackTileCommand;
                                 rockTile.Click += Button_Click;
-                            }
-                            else
-                            {
-                                for (int k = 0; k < 10; k++)
-                                {
-                                    if (i.ToString() + j.ToString() == array[k])
-                                    {
-                                        rockTile.Background = Brushes.Green;
-                                    }
-                                }
                             }
 
                             System.Diagnostics.Debug.WriteLine(rockTile.Parent);
