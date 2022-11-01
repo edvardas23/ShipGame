@@ -18,6 +18,8 @@ using GameClient.MVVM.Model.UnitModels.ShipModels;
 using System.CodeDom;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using GameClient.MVVM.Model.FacadeModels;
+using static GameClient.MVVM.Model.FacadeModels.Facade;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -177,12 +179,20 @@ namespace GameClient.MVVM.ViewModel
             messageString = messageString.Substring(messageString.Length - 1);
             Session.Instance.GameModeType = int.Parse(messageString);
 
+
+
+            Facade facade = new Facade(Session.Instance.GameModeType);
+
             switch (Session.Instance.GameModeType)
             {
                 case 1:
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MainWindow.AppWindow.currentDmg.Text = "Klasikinis";
+                       
+                        ClassicModeSubsystem sub = new ClassicModeSubsystem();
+                        MainWindow.AppWindow.currentMode.Text = sub.ModeName(); 
+
+
                         Session.Instance.MapSize = 10;
                         GenerateEmptyMap("m");
                         List<Ship> ships = new List<Ship>();
@@ -199,7 +209,9 @@ namespace GameClient.MVVM.ViewModel
                 case 2:
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MainWindow.AppWindow.currentDmg.Text = "Papildytas";
+                        AdvancedModeSubsystem sub = new AdvancedModeSubsystem();
+
+                        MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
@@ -209,7 +221,9 @@ namespace GameClient.MVVM.ViewModel
                 case 3:
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MainWindow.AppWindow.currentDmg.Text = "Turbo";
+                        TurboModeSubsystem sub = new TurboModeSubsystem();
+
+                        MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
