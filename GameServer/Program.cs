@@ -1,8 +1,7 @@
 ﻿using GameServer;
-using GameServer.Net.IO;
-using System;
 using System.Net;
 using System.Net.Sockets;
+using PacketClass;
 
 namespace GameSever
 {
@@ -13,6 +12,7 @@ namespace GameSever
         
         static void Main(string[] args)
         {
+
             _users = new List<Client>();
             _listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6969);
             _listener.Start();
@@ -32,7 +32,7 @@ namespace GameSever
             {
                 foreach (var item in _users)
                 {
-                    var broadcastPacket = new PacketBuilder();
+                    PacketBuilder broadcastPacket = new PacketBuilder_Adapter();
                     broadcastPacket.WriteOpCode(1);
                     broadcastPacket.WriteMessage(item.Username);
                     broadcastPacket.WriteMessage(item.UID.ToString());
@@ -44,7 +44,7 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                var msgPacket = new PacketBuilder();
+                var msgPacket = new PacketBuilder_Adapter();
                 msgPacket.WriteOpCode(5);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -58,7 +58,7 @@ namespace GameSever
            
             foreach (var user in _users)
             {
-                var broadcastPacket = new PacketBuilder();
+                var broadcastPacket = new PacketBuilder_Adapter();
                 broadcastPacket.WriteOpCode(10);
                 broadcastPacket.WriteMessage(uid);
                 user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
@@ -70,7 +70,7 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                var msgPacket = new PacketBuilder();
+                var msgPacket = new PacketBuilder_Adapter();
                 msgPacket.WriteOpCode(15);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -83,7 +83,7 @@ namespace GameSever
             {
                 if (user.UID.ToString() != uid && user.Turn == false )
                 {
-                    var attackPacket = new PacketBuilder();
+                    var attackPacket = new PacketBuilder_Adapter();
                     attackPacket.WriteOpCode(20);
                     attackPacket.WriteMessage(tileName);
                     user.ClientSocket.Client.Send(attackPacket.GetPacketBytes());
@@ -98,9 +98,5 @@ namespace GameSever
 
             }          
         }
-
-
-           
-        
     }
 }

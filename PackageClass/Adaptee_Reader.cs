@@ -5,13 +5,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.Net.IO
+namespace PacketClass
 {
-    class PacketReader : BinaryReader
+    internal class Adaptee_Reader : BinaryReader
     {
         private NetworkStream _ns;
-        public PacketReader(NetworkStream ns) : base(ns)
-        { 
+        public Adaptee_Reader(NetworkStream ns) : base(ns)
+        {
             _ns = ns;
         }
         public string ReadMessage()
@@ -23,6 +23,14 @@ namespace GameServer.Net.IO
 
             var msg = Encoding.ASCII.GetString(msgBuffer);
             return msg;
+        }
+        public int ReadByte()
+        {
+            return _ns.ReadByte();
+        }
+        public void WriteConsole(string Username)
+        {
+            Console.WriteLine($"[{DateTime.Now}]:Klientas vardu: {Username} prisijungė");
         }
     }
 }

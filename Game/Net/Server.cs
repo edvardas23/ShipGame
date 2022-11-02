@@ -1,10 +1,7 @@
-﻿using GameClient.Net.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
+using PacketClass;
 
 namespace GameClient.Net
 {
@@ -27,10 +24,10 @@ namespace GameClient.Net
             if (!_client.Connected)
             {
                 _client.Connect("127.0.0.1", 6969);
-                PacketReader = new PacketReader(_client.GetStream());
+                PacketReader = new PacketReader_Adapter(_client.GetStream());
                 if (!string.IsNullOrEmpty(username))
                 {
-                    var connectPacket = new PacketBuilder();
+                    var connectPacket = new PacketBuilder_Adapter();
                     connectPacket.WriteOpCode(0);
                     connectPacket.WriteMessage(username);
                     _client.Client.Send(connectPacket.GetPacketBytes());
@@ -79,7 +76,7 @@ namespace GameClient.Net
         }
         public void SendMessageToServer(string message)
         {
-            var messagePacket = new PacketBuilder();
+            var messagePacket = new PacketBuilder_Adapter();
             messagePacket.WriteOpCode(5);
             messagePacket.WriteMessage(message);
             _client.Client.Send(messagePacket.GetPacketBytes());
@@ -87,7 +84,7 @@ namespace GameClient.Net
         }
         public void StartNewGameOnServer(int GameModeType)
         {
-            var newGamePacket = new PacketBuilder();
+            var newGamePacket = new PacketBuilder_Adapter();
             newGamePacket.WriteOpCode(15);
             newGamePacket.WriteMessage("Naujas žaidimas" + GameModeType.ToString());
             _client.Client.Send(newGamePacket.GetPacketBytes());
@@ -95,7 +92,7 @@ namespace GameClient.Net
         
         public void AttackEnemyTileToServer(string buttonName)
         {
-            var attackPacket = new PacketBuilder();
+            var attackPacket = new PacketBuilder_Adapter();
             attackPacket.WriteOpCode(20);
             attackPacket.WriteMessage(buttonName);
             _client.Client.Send(attackPacket.GetPacketBytes());

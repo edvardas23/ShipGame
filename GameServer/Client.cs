@@ -1,6 +1,6 @@
-﻿using GameServer.Net.IO;
-using GameSever;
+﻿using GameSever;
 using System.Net.Sockets;
+using PacketClass;
 
 namespace GameServer
 {
@@ -16,7 +16,8 @@ namespace GameServer
         {
             ClientSocket = client;
             UID = Guid.NewGuid();
-            _packetReader = new PacketReader(ClientSocket.GetStream());
+
+            _packetReader = new PacketReader_Adapter(ClientSocket.GetStream());
             var opcode = _packetReader.ReadByte();
             Username = _packetReader.ReadMessage();
             Turn = false;
