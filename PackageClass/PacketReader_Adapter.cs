@@ -14,8 +14,8 @@ namespace PacketClass
         
         public PacketReader_Adapter(NetworkStream stream)
         {
-            adaptee = new Adaptee_Reader(stream);
             this.stream = stream;
+            adaptee = new Adaptee_Reader(stream);
         }
         public override string ReadMessage()
         {
