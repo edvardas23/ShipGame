@@ -36,5 +36,10 @@ namespace GameClient.MVVM.Model.UnitModels
         {
             return hp == 0;
         }
+        public virtual string Display()
+        {
+            string msg = "HP: " + hp as string;
+            return msg;
+        }
     }
 }

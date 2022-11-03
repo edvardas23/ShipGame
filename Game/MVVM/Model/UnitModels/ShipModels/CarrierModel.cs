@@ -29,5 +29,10 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         {
 
         }
+        public override string Display()
+        {
+            string msg = "Name -----" + name;
+            return msg;
+        }
     }
 }

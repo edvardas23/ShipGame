@@ -11,4 +11,8 @@
     <ProjectReference Include="..\PackageClass\PacketClass.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Net\" />
+  </ItemGroup>
+
 </Project>
