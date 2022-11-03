@@ -32,6 +32,8 @@ namespace GameClient.MVVM.Model
             myMap = new int[mapSize, mapSize];
             List<Ship> ships = new List<Ship>();
         }
+
+
         public int CarrierCount
         {
             get { return carrierCount; }

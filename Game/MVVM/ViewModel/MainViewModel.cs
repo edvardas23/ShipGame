@@ -20,6 +20,7 @@ using System.Windows.Controls.Primitives;
 using System.ComponentModel;
 using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
+using GameClient.MVVM.Model.PrototypeModels;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -203,7 +204,7 @@ namespace GameClient.MVVM.ViewModel
                         DrawUiForShips();
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
-                        //GenerateEmptyMap("e");
+                       // GenerateEmptyMap("e");
                     });
                     break;
                 case 2:
@@ -215,7 +216,7 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
-                        //GenerateEmptyMap("e");
+                       // GenerateEmptyMap("e");
                     });
                     break;
                 case 3:
@@ -238,16 +239,26 @@ namespace GameClient.MVVM.ViewModel
         private void GenerateEmptyMap(string identifier)
         {
             Random rnd = new Random();
-            string[] array = new string[10]; 
+            Prototype prototype = new Prototype(); 
             for (int i = 0; i < 10; i++)
             {
                 int x = rnd.Next(0, 9);
                 int y = rnd.Next(0, 9);
-                array[i] = x.ToString() + y.ToString();
+                prototype.array[i] = x.ToString() + y.ToString();
             }
+
+            Prototype clone = prototype.ShallowCopy();
+
+
 
             MainWindow.AppWindow.Dispatcher.Invoke(() =>
             {
+                MainWindow.AppWindow.ShipCoord.Text += "Laivų koordinačiu kopijos padarytos su prototype patternu: \n";
+                for (int i = 0; i < 10; i++)
+                {
+                    MainWindow.AppWindow.ShipCoord.Text += " " + clone.array[i];
+                }
+                
                 StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
                 double width = stackPanel.ActualWidth / Session.Instance.MapSize;
                 double height = stackPanel.ActualHeight / Session.Instance.MapSize;
@@ -272,6 +283,8 @@ namespace GameClient.MVVM.ViewModel
                             rockTile.Name = identifier + i.ToString() + j.ToString();
                             rockTile.Width = width;
                             rockTile.Height = height;
+
+
 
                             if (identifier.Equals("e"))
                             {
@@ -300,7 +313,7 @@ namespace GameClient.MVVM.ViewModel
                             {
                                 for (int k = 0; k < 10; k++)
                                 {
-                                    if (i.ToString() + j.ToString() == array[k])
+                                    if (i.ToString() + j.ToString() == prototype.array[k])
                                     {
                                         tile.Background = Brushes.Green;
                                     }
@@ -310,6 +323,7 @@ namespace GameClient.MVVM.ViewModel
                             System.Diagnostics.Debug.WriteLine(tile.Parent);
                             newStackPanel.Children.Add(tile);
                             TilesList.Add(tile);
+
                         }
                     }
                 }
@@ -353,27 +367,6 @@ namespace GameClient.MVVM.ViewModel
             });
         }
 
-        //private void GenerateRandomShips(object sender, RoutedEventArgs e)
-        //{
-        //    Random rnd = new Random();
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        int x = rnd.Next(0, 99);
-        //        int y = rnd.Next(0, 99);
-        //        Tile ShipTile = new Tile(x, y);
-        //        ShipTile.Name = "m" + x.ToString() + y.ToString();
-        //        DrawTiles(ShipTile);
-        //    }
 
-        //}
-        //private void DrawTiles(Tile tile)
-        //{
-        //    MainWindow.AppWindow.Dispatcher.Invoke(() =>
-        //    {
-        //        Tile found = (Tile)MainWindow.AppWindow.mStackPanel;
-        //        found.Background = Brushes.Green;
-        //    });
-
-        //}
     }
 }
