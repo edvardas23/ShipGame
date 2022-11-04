@@ -29,6 +29,7 @@ namespace GameClient.MVVM.ViewModel
         public RelayCommand StartNewGameCommand { get; set; }
         public RelayCommand ReadyForGameCommand { get; set; }
         public RelayCommand AttackTileCommand { get; set; }
+        public RelayCommand UndoGameStartCommand { get; set; }
         private Server _server;
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
@@ -51,11 +52,12 @@ namespace GameClient.MVVM.ViewModel
             _server.userDisconnectedEvent += RemoveUser;
             _server.startGameEvent += StartGameEvent;
             _server.attackEnemyTile += AttackEnemyTile;
+            _server.undoGameStart += UndoGameStart;
             ConnectToSeverCommand = new RelayCommand(o => _server.ConnectToSever(Username), o => !string.IsNullOrEmpty(Username));
             SendMessageCommand = new RelayCommand(o => _server.SendMessageToServer(Message), o => !string.IsNullOrEmpty(Message));
-            //ReadyForGameCommand = new RelayCommand() TODO
             StartNewGameCommand = new RelayCommand(o => _server.StartNewGameOnServer(Session.Instance.GameModeType));
             AttackTileCommand = new RelayCommand(o => _server.AttackEnemyTileToServer(TileName));
+            UndoGameStartCommand = new RelayCommand(o => _server.UndoGameStartToServer());
         }
         private void UserConnected()
         {
@@ -83,6 +85,25 @@ namespace GameClient.MVVM.ViewModel
             Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
             CheckUsers();
         }
+        private void UndoGameStart()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MainWindow.AppWindow.UndoGameStartButton.Visibility = Visibility.Hidden;
+                if (CheckUsers())
+                {
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                }
+                MainWindow.AppWindow.mStackPanel.Children.Clear();
+                MainWindow.AppWindow.shipsPanel.Children.Clear();
+                MainWindow.AppWindow.eStackPanel.Children.Clear();
+                MainWindow.AppWindow.currentDmg.Text = "";
+                MainWindow.AppWindow.currentMode.Text = "";
+                MainWindow.AppWindow.ShipCoord.Text = "";
+                //MainWindow.AppWindow.infoStackPanel.Children.Clear();currentDmg currentMode ShipCoord
+            });
+        }
+
         private void AttackEnemyTile()
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -100,7 +121,6 @@ namespace GameClient.MVVM.ViewModel
                         }
                     }
                 }
-
             });
         }
 
@@ -174,10 +194,9 @@ namespace GameClient.MVVM.ViewModel
             var messageString = _server.PacketReader.ReadMessage();
             messageString = messageString.Substring(messageString.Length - 1);
             Session.Instance.GameModeType = int.Parse(messageString);
-
-
-
             Facade facade = new Facade(Session.Instance.GameModeType);
+            StartGameButtonVisibilty(false);
+            UndoButtonVisibilty(true);
 
             switch (Session.Instance.GameModeType)
             {
@@ -199,7 +218,7 @@ namespace GameClient.MVVM.ViewModel
                         DrawUiForShips();
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
-                        // GenerateEmptyMap("e");
+                        GenerateEmptyMap("e");
                     });
                     break;
                 case 2:
@@ -211,7 +230,7 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
-                        // GenerateEmptyMap("e");
+                        GenerateEmptyMap("e");
                     });
                     break;
                 case 3:
@@ -223,7 +242,7 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
-                        //GenerateEmptyMap("e");
+                        GenerateEmptyMap("e");
                     });
                     break;
                 default:
@@ -324,21 +343,52 @@ namespace GameClient.MVVM.ViewModel
                 }
             });
         }   
-        private void CheckUsers()
+        private bool CheckUsers()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 if (Users.Count >= 2)
                 {
                     MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                    return true;
                 }
                 else
                 {
                     MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                    return true;
                 }
             });
+            return false;
         }
-
-
+        private void StartGameButtonVisibilty(bool Flag)
+        {
+            if (Flag)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                });
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Hidden;
+                });
+            }
+        }
+        private void UndoButtonVisibilty(bool Flag)
+        {
+            if (Flag)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindow.AppWindow.UndoGameStartButton.Visibility = Visibility.Visible;
+                    MainWindow.AppWindow.UndoGameStartButton.IsEnabled = Flag;
+                });
+            }
+        }
     }
 }

@@ -51,7 +51,12 @@ namespace GameServer
                             Turn = false;
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");   
                             break;
+                        case 25:
+                            Program.BroadcastUndoGameStart();
+                            Console.WriteLine($"[{DateTime.Now}]:Žaidimo pradžia atšaukta!");
+                            break;
                         default:
+                            Console.WriteLine("Nenustatyta komanda");
                             break;
                     }
                 }

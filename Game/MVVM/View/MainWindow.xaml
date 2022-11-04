@@ -36,6 +36,14 @@
                     Content="Pradėti žaidimą"
                     Click="StartNewGameButton_Click"
                     IsEnabled="False"/>
+            <Button Height="25"
+                    DockPanel.Dock="Top"
+                    Name="UndoGameStartButton"
+                    Content="Atšaukti žaidima"
+                    Command="{Binding UndoGameStartCommand}"
+                    Visibility="Collapsed"
+                    IsEnabled="False"/>
+
 
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
@@ -46,9 +54,8 @@
             </ListView>
         </DockPanel>
         <StackPanel
-            Name="shipsPanel"
             Grid.Row="1">
-            <Button Height="25"
+            <Button Height="20"
                     Name="classicModeButton"
                     Content="Klasikinis"
                     DockPanel.Dock="Bottom"
@@ -56,7 +63,7 @@
                     Click="classicModeButton_Click"
                     Command="{Binding StartNewGameCommand}"
                 />
-            <Button Height="25"
+            <Button Height="20"
                     Name="advancedModeButton"
                     Content="Papildytas"
                     DockPanel.Dock="Bottom"
@@ -64,7 +71,7 @@
                     Click="advancedModeButton_Click"
                     Command="{Binding StartNewGameCommand}"
                 />
-            <Button Height="25"
+            <Button Height="20"
                     Name="turboModeButton"
                     Content="Turbo"
                     DockPanel.Dock="Bottom"
@@ -72,6 +79,12 @@
                     Click="turboModeButton_Click"
                     Command="{Binding StartNewGameCommand}"
                 />
+        </StackPanel>
+        <StackPanel
+            VerticalAlignment="Bottom"
+            Height="145"
+            Name="shipsPanel"
+            Grid.Row="1">
         </StackPanel>
         <StackPanel
             Name="bottomStackPanel"
@@ -112,12 +125,10 @@
 
         </StackPanel>
 
-        <Button  Name="Klasikinis" Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="12,31,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Damage_1" Width="122" Grid.Column="3"/>
-        <Button Name="Fugasinis" Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Left" Margin="12,56,0,0" Grid.Row="1" Click="Damage_4" VerticalAlignment="Top" Grid.Column="3"/>
-        <TextBlock Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="12,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="122" Grid.Column="3"/>
-        <TextBlock Name="currentMode"  HorizontalAlignment="Center" Height="39" Margin="0,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Grid.Column="3" Grid.Row="1"/>
-        <TextBlock Name="ShipCoord" Grid.Column="3" HorizontalAlignment="Left" Margin="190,18,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="150" Width="130"/>
-
-
+        <Button Grid.Column="4" Grid.Row="1" Name="Klasikinis" Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="12,5,0,0" VerticalAlignment="Top" Click="Damage_1" Width="122"/>
+        <Button Grid.Column="4" Grid.Row="1" Name="Fugasinis" Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Right" Margin="-20,5,20,0" Click="Damage_4" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="4" Grid.Row="1" Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="12,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Grid.Column="4" Grid.Row="1" Name="currentMode"  HorizontalAlignment="Right" Height="14" Margin="12,30,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Grid.Column="4" Grid.Row="1" Name="ShipCoord" HorizontalAlignment="Center" Margin="0,40,0,0" TextWrapping="Wrap" Text="" Height="120" Width="300"/>
     </Grid>
 </Window>

@@ -49,6 +49,15 @@ namespace GameSever
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
             }
         }
+        public static void BroadcastUndoGameStart()
+        {
+            foreach (var user in _users)
+            {
+                var msgPacket = new PacketBuilder_Adapter();
+                msgPacket.WriteOpCode(25);
+                user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
+            }
+        }
 
         public static void BroadcastDisconnect(string uid)
         {

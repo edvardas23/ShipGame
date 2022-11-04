@@ -64,8 +64,7 @@ namespace Game
                 classicModeButton.Visibility = Visibility.Hidden;
                 advancedModeButton.Visibility = Visibility.Hidden;
                 turboModeButton.Visibility = Visibility.Hidden;
-                StartNewGameButton.Visibility = Visibility.Hidden;
-                //eStackPanel.Visibility = Visibility.Hidden;
+                StartNewGameButton.Visibility = Visibility.Collapsed;
             }
         }
         private void classicModeButton_Click(object sender, RoutedEventArgs e)
