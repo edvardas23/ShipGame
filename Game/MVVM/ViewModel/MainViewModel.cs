@@ -10,14 +10,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents.DocumentStructures;
 using System.Windows.Media;
-using System.Threading;
 using GameClient.MVVM.Model.UnitModels;
 using GameClient.MVVM.Model.UnitModels.ShipModels;
-using System.CodeDom;
-using System.Windows.Controls.Primitives;
-using System.ComponentModel;
 using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
@@ -204,7 +199,7 @@ namespace GameClient.MVVM.ViewModel
                         DrawUiForShips();
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
-                       // GenerateEmptyMap("e");
+                        // GenerateEmptyMap("e");
                     });
                     break;
                 case 2:
@@ -216,7 +211,7 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
-                       // GenerateEmptyMap("e");
+                        // GenerateEmptyMap("e");
                     });
                     break;
                 case 3:
@@ -328,30 +323,7 @@ namespace GameClient.MVVM.ViewModel
                     }
                 }
             });
-        }
-        public void AssignPlayers(GameModel gameModel)
-        {
-            foreach (var item in Users)
-            {
-                if (firstPlayer == null)
-                {
-                    firstPlayer = new Player();
-                    firstPlayer.Username = item.Username;
-                    firstPlayer.UID = item.UID;
-
-                    gameModel.firstPlayer = firstPlayer;
-                    continue;
-                }
-                else if (secondPlayer == null)
-                {
-                    secondPlayer = new Player();
-                    secondPlayer.Username = item.Username;
-                    secondPlayer.UID = item.UID;
-
-                    gameModel.secondPlayer = secondPlayer;
-                }
-            }
-        }
+        }   
         private void CheckUsers()
         {
             Application.Current.Dispatcher.Invoke(() =>
