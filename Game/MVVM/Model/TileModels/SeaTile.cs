@@ -17,7 +17,7 @@ namespace GameClient.MVVM.Model.TileModels
 
         public SeaTile(int x, int y) : base(x, y)
         {
-
+        
         }
     }
 }

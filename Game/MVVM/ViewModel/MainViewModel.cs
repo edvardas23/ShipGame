@@ -16,6 +16,7 @@ using GameClient.MVVM.Model.UnitModels.ShipModels;
 using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
+using GameClient.MVVM.Builder;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -28,12 +29,12 @@ namespace GameClient.MVVM.ViewModel
         public RelayCommand SendMessageCommand { get; set; }
         public RelayCommand StartNewGameCommand { get; set; }
         public RelayCommand ReadyForGameCommand { get; set; }
-        public RelayCommand AttackTileCommand { get; set; }
+        public static RelayCommand AttackTileCommand { get; set; }
         public RelayCommand UndoGameStartCommand { get; set; }
         private Server _server;
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
-        public string TileName { get; set; }
+        public static string TileName { get; set; }
         public string Message { get; set; }
         public string Username { get; set; }
         public ShootStrategy shoot { get; set; }
@@ -124,7 +125,7 @@ namespace GameClient.MVVM.ViewModel
             });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public static void Button_Click(object sender, RoutedEventArgs e)
         {
             Tile tile = sender as Tile;
             tile.Background = Brushes.Gray;
@@ -272,8 +273,12 @@ namespace GameClient.MVVM.ViewModel
                 {
                     MainWindow.AppWindow.ShipCoord.Text += " " + clone.array[i];
                 }
-                
-                StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
+                Director director = new Director();
+                ConcreteBuilder builder = new ConcreteBuilder();
+                director.Builder = builder;
+
+                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand);
+               /* StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
                 double width = stackPanel.ActualWidth / Session.Instance.MapSize;
                 double height = stackPanel.ActualHeight / Session.Instance.MapSize;
                 for (int i = 0; i < Session.Instance.MapSize; i++)
@@ -340,7 +345,7 @@ namespace GameClient.MVVM.ViewModel
 
                         }
                     }
-                }
+                }*/
             });
         }   
         private bool CheckUsers()

@@ -14,5 +14,9 @@ namespace GameClient.MVVM.Model.TileModels
             tile.destroyable = true;
             this.placeable = false;
         }
+        public RockTile(int x, int y) : base(x, y)
+        {
+
+        }
     }
 }
