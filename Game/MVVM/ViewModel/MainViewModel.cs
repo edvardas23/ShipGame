@@ -17,6 +17,7 @@ using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
 using GameClient.MVVM.Builder;
+using GameClient.Net.Decorator;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -137,59 +138,70 @@ namespace GameClient.MVVM.ViewModel
             MessageBox.Show(currentShip.GetType().ToString());
             //currentShip.Size
         }
-        //private void PlaceShips(List<Ship> ships)
-        //{
-        //    foreach (var item in ships)
-        //    {
-        //item.Tiles.Add(Tile)
-        //    }
-        //}
+        /*private void PlaceShips(List<Ship> ships)
+        {
+            foreach (var item in ships)
+            {
+        item.Tiles.Add(Tile)
+            }
+        }*/
 
         private void DrawUiForShips()
         {
             AbstractFactory abstr = new AbstractListFactory();
             List<Ship> listOfShips = abstr.GetShipsList();
-
             for (int i = 0; i < listOfShips.Count(); i++)
             {
                 Button btn = new Button();
+
                 if (listOfShips[i] is BattleshipModel)
                 {
-                    btn.Content = "Battleship";
                     currentShip = new BattleshipModel();
+                    BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip);
+                    battleshipDestroyable.SetButtonBackground(btn);
+                    btn.Content = "Battleship";
                     btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is CarrierModel)
                 {
-                    btn.Content = "Carrier";
                     currentShip = new CarrierModel();
+                    CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip);
+                    carrierLoadable.SetButtonBackground(btn);
+                    btn.Content = "Carrier";
+                    btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is DestroyerModel)
                 {
-                    btn.Content = "Destroyer";
                     currentShip = new DestroyerModel();
+                    DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip);
+                    destroyerDecorated.SetButtonBackground(btn);
+                    btn.Content = "Destroyer";
+                    btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is PatrolBoatModel)
                 {
-                    btn.Content = "Patrol Boat";
                     currentShip = new PatrolBoatModel();
+                    PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip);
+                    patrolBoatArmed.SetButtonBackground(btn);
+                    btn.Content = "Patrol Boat";
+                    btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
                 else
                 {
-                    btn.Content = "Submarine";
                     currentShip = new SubmarineModel();
+                    SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip);
+                    submarineDecorated.SetButtonBackground(btn);
+                    btn.Content = "Submarine";
+                    btn.Click += Button2_Click;
                     btn.Height = 25;
                 }
-
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
             }
-
         }
-
         private void StartGameEvent()
         {
             var messageString = _server.PacketReader.ReadMessage();

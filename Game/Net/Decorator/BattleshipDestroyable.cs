@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GameClient.Net.Decorator
 {
@@ -38,6 +40,10 @@ namespace GameClient.Net.Decorator
                 msg = msg + rocket + "\n";
             }
             return msg;
+        }
+        public void SetButtonBackground(Button button) 
+        {
+            button.Background = Brushes.Red;
         }
     }
 }
