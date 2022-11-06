@@ -31,7 +31,7 @@ namespace GameClient.Net
                 PacketReader = new PacketReader_Adapter(_client.GetStream());
                 if (!string.IsNullOrEmpty(username))
                 {
-                    var connectPacket = new PacketBuilder_Adapter();
+                    PacketBuilder connectPacket = new PacketBuilder_Adapter();
                     connectPacket.WriteOpCode(0);
                     connectPacket.WriteMessage(username);
                     _client.Client.Send(connectPacket.GetPacketBytes());
@@ -83,7 +83,7 @@ namespace GameClient.Net
         }
         public void SendMessageToServer(string message)
         {
-            var messagePacket = new PacketBuilder_Adapter();
+            PacketBuilder messagePacket = new PacketBuilder_Adapter();
             messagePacket.WriteOpCode(5);
             messagePacket.WriteMessage(message);
             _client.Client.Send(messagePacket.GetPacketBytes());
@@ -91,7 +91,7 @@ namespace GameClient.Net
         }
         public void StartNewGameOnServer(int GameModeType)
         {
-            var newGamePacket = new PacketBuilder_Adapter();
+            PacketBuilder newGamePacket = new PacketBuilder_Adapter();
             newGamePacket.WriteOpCode(15);
             newGamePacket.WriteMessage("Naujas žaidimas" + GameModeType.ToString());
             _client.Client.Send(newGamePacket.GetPacketBytes());
@@ -99,14 +99,14 @@ namespace GameClient.Net
         
         public void AttackEnemyTileToServer(string buttonName)
         {
-            var attackPacket = new PacketBuilder_Adapter();
+            PacketBuilder attackPacket = new PacketBuilder_Adapter();
             attackPacket.WriteOpCode(20);
             attackPacket.WriteMessage(buttonName);
             _client.Client.Send(attackPacket.GetPacketBytes());
         }
         public void UndoGameStartToServer()
         {
-            var undoGameStartPacket = new PacketBuilder_Adapter();
+            PacketBuilder undoGameStartPacket = new PacketBuilder_Adapter();
             undoGameStartPacket.WriteOpCode(25);
             _client.Client.Send(undoGameStartPacket.GetPacketBytes());
         }

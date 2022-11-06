@@ -18,11 +18,17 @@ using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
 using GameClient.MVVM.Builder;
 using GameClient.Net.Decorator;
+using System.Runtime.CompilerServices;
+using GameClient.MVVM.Bridge;
 
 namespace GameClient.MVVM.ViewModel
 {
     public class MainViewModel
     {
+        private static int type;
+        private static bool WantsToAddShip;
+        private static Brush Color;
+        private static bool placeTile;
         public Ship currentShip { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
         public ObservableCollection<string> Messages { get; set; }
@@ -128,15 +134,88 @@ namespace GameClient.MVVM.ViewModel
 
         public static void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tile tile = sender as Tile;
-            tile.Background = Brushes.Gray;
-            TileName = tile.Name;
+            Random rnd = new Random();
+            if (WantsToAddShip && !placeTile)
+            {
+                Tile tile = sender as Tile;
+                tile.Background = Color;
+                TileName = tile.Name;
+                WantsToAddShip = false;
+            }
+            else if(!WantsToAddShip && placeTile)
+            {
+                if(type == 6)
+                {
+                    RockTile rockTile = new RockTile();
+                    rockTile.Data = new RockTileData("RockTile" + rnd.Next(0, 100).ToString(), Color);
+                    Tile tile = rockTile.Add(sender);
+                    TileName = tile.Name;
+                    rockTile.ShowAll();
+                }
+                if(type == 7)
+                {
+                    IslandTile island = new IslandTile();
+                    island.Data = new IslandTileData("IslandTile" + rnd.Next(0, 100).ToString(), Color);
+                    Tile tile = island.Add(sender);
+                    TileName = tile.Name;
+                    island.ShowAll();
+                }
+            }
+            else
+            {
+                Tile tile = sender as Tile;
+                tile.Background = Brushes.Gray;
+                TileName = tile.Name;
+            }
         }
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
-            //currentShip = new Ship();
-            MessageBox.Show(currentShip.GetType().ToString());
-            //currentShip.Size
+            switch (type)
+            {
+                case 1:
+                    currentShip = new BattleshipModel();
+                    WantsToAddShip = true;
+                    placeTile = false;
+                    Color = Brushes.Moccasin;
+                    break;
+                case 2:
+                    currentShip = new CarrierModel();
+                    WantsToAddShip = true;
+                    placeTile = false;
+                    Color = Brushes.LightGreen;
+                    break;
+                case 3:
+                    currentShip = new DestroyerModel();
+                    WantsToAddShip = true;
+                    placeTile = false;
+                    Color = Brushes.CadetBlue;
+                    break;
+                case 4:
+                    currentShip = new PatrolBoatModel();
+                    WantsToAddShip = true;
+                    placeTile = false;
+                    Color = Brushes.DarkOrange;
+                    break;
+                case 5:
+                    currentShip = new SubmarineModel();
+                    WantsToAddShip = true;
+                    placeTile = false;
+                    Color = Brushes.Aquamarine;
+                    break;
+                case 6:
+                    placeTile = true;
+                    WantsToAddShip = false;
+                    Color = Brushes.Brown;
+                    break;
+                case 7:
+                    placeTile = true;
+                    WantsToAddShip = false;
+                    Color = Brushes.DarkGreen;
+                    break;
+                default:
+                    MessageBox.Show("Tokio tipo nėra");
+                    break;
+            }
         }
         /*private void PlaceShips(List<Ship> ships)
         {
@@ -160,7 +239,7 @@ namespace GameClient.MVVM.ViewModel
                     BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip);
                     battleshipDestroyable.SetButtonBackground(btn);
                     btn.Content = "Battleship";
-                    btn.Click += Button2_Click;
+                    btn.Click += SetBattleship;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is CarrierModel)
@@ -169,7 +248,7 @@ namespace GameClient.MVVM.ViewModel
                     CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip);
                     carrierLoadable.SetButtonBackground(btn);
                     btn.Content = "Carrier";
-                    btn.Click += Button2_Click;
+                    btn.Click += SetCarrier;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is DestroyerModel)
@@ -178,7 +257,7 @@ namespace GameClient.MVVM.ViewModel
                     DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip);
                     destroyerDecorated.SetButtonBackground(btn);
                     btn.Content = "Destroyer";
-                    btn.Click += Button2_Click;
+                    btn.Click += SetDestroyer;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is PatrolBoatModel)
@@ -187,7 +266,7 @@ namespace GameClient.MVVM.ViewModel
                     PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip);
                     patrolBoatArmed.SetButtonBackground(btn);
                     btn.Content = "Patrol Boat";
-                    btn.Click += Button2_Click;
+                    btn.Click += SetPatrolBoat;
                     btn.Height = 25;
                 }
                 else
@@ -196,11 +275,64 @@ namespace GameClient.MVVM.ViewModel
                     SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip);
                     submarineDecorated.SetButtonBackground(btn);
                     btn.Content = "Submarine";
-                    btn.Click += Button2_Click;
+                    btn.Click += SetSubmarine;
                     btn.Height = 25;
                 }
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
             }
+        }
+        private void AddButtonForPlacingRocks()
+        {
+            Button btn = new Button();
+
+            btn.Content = "New rock";
+            btn.Click += SetRock;
+            btn.Height = 25;
+            MainWindow.AppWindow.shipsPanel.Children.Add(btn);
+        }
+        private void AddButtonForPlacingIslands()
+        {
+            Button btn = new Button();
+
+            btn.Content = "New island";
+            btn.Click += SetIsland;
+            btn.Height = 25;
+            MainWindow.AppWindow.shipsPanel.Children.Add(btn);
+        }
+        private void SetBattleship(object sender, RoutedEventArgs e)
+        {
+            type = 1;
+            Button2_Click(sender, e);
+        }
+        private void SetCarrier(object sender, RoutedEventArgs e)
+        {
+            type = 2;
+            Button2_Click(sender, e);
+        }
+        private void SetDestroyer(object sender, RoutedEventArgs e)
+        {
+            type = 3;
+            Button2_Click(sender, e);
+        }
+        private void SetPatrolBoat(object sender, RoutedEventArgs e)
+        {
+            type = 4;
+            Button2_Click(sender, e);
+        }
+        private void SetSubmarine(object sender, RoutedEventArgs e)
+        {
+            type = 5;
+            Button2_Click(sender, e);
+        }
+        private void SetRock(object sender, RoutedEventArgs e)
+        {
+            type = 6;
+            Button2_Click(sender, e);
+        }
+        private void SetIsland(object sender, RoutedEventArgs e)
+        {
+            type = 7;
+            Button2_Click(sender, e);
         }
         private void StartGameEvent()
         {
@@ -229,6 +361,8 @@ namespace GameClient.MVVM.ViewModel
                         ships.Add(ship);
                         ships.Add(ship);
                         DrawUiForShips();
+                        AddButtonForPlacingRocks();
+                        AddButtonForPlacingIslands();
                         //PlaceShips(ships);
                         //Ship ship = new Ship();
                         GenerateEmptyMap("e");
@@ -243,6 +377,8 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
+                        AddButtonForPlacingRocks();
+                        AddButtonForPlacingIslands();
                         GenerateEmptyMap("e");
                     });
                     break;
@@ -255,6 +391,8 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
                         DrawUiForShips();
+                        AddButtonForPlacingRocks();
+                        AddButtonForPlacingIslands();
                         GenerateEmptyMap("e");
                     });
                     break;

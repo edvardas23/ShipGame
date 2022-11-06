@@ -43,7 +43,7 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                var msgPacket = new PacketBuilder_Adapter();
+                PacketBuilder msgPacket = new PacketBuilder_Adapter();
                 msgPacket.WriteOpCode(5);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -53,7 +53,7 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                var msgPacket = new PacketBuilder_Adapter();
+                PacketBuilder msgPacket = new PacketBuilder_Adapter();
                 msgPacket.WriteOpCode(25);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
             }
@@ -78,7 +78,7 @@ namespace GameSever
         {
             foreach (var user in _users)
             {
-                var msgPacket = new PacketBuilder_Adapter();
+                PacketBuilder msgPacket = new PacketBuilder_Adapter();
                 msgPacket.WriteOpCode(15);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -91,7 +91,7 @@ namespace GameSever
             {
                 if (user.UID.ToString() != uid && user.Turn == false )
                 {
-                    var attackPacket = new PacketBuilder_Adapter();
+                    PacketBuilder attackPacket = new PacketBuilder_Adapter();
                     attackPacket.WriteOpCode(20);
                     attackPacket.WriteMessage(tileName);
                     user.ClientSocket.Client.Send(attackPacket.GetPacketBytes());

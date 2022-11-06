@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameClient.MVVM.Bridge;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,10 @@ namespace GameClient.MVVM.Model.TileModels
         SHIP,
         EMPTY
     }
-    public class Tile : Button
+    public class Tile : Button //Abstraction
     {
+        private TileImplementor implementor;
+
         //public const int XY_MAX_VALUE = 10;
         public const int XY_MIN_VALUE = 0;
         private int x;
@@ -53,9 +56,23 @@ namespace GameClient.MVVM.Model.TileModels
             this.y = y;
             content = Type.EMPTY;
         }
+        public Tile() { }
         public static bool CompareXY(Tile a, Tile b)
         {
             return a.x == b.x && a.y == b.y;
+        }
+        public TileImplementor Data
+        {
+            set { implementor = value; }
+            get { return implementor; }
+        }
+        public virtual void ShowAll()
+        {
+            implementor.ShowAllRecords();
+        }
+        public virtual Tile Add(object obj)
+        {
+            return implementor.AddTile(obj);
         }
     }
 }

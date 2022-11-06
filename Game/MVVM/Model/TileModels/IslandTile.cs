@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.TileModels
 {
-    internal class RockTile : Tile //RefinedAbstraction
+    public class IslandTile : Tile //RefinedAbstraction
     {
-        public RockTile() { }
-        public RockTile(Tile tile) : base(tile.X, tile.Y)
+        public IslandTile() { }
+        public IslandTile(Tile tile) : base(tile.X, tile.Y)
         {
             tile.destroyable = true;
             this.placeable = false;
         }
-        public RockTile(int x, int y) : base(x, y)
+        public IslandTile(int x, int y) : base(x, y)
         {
 
         }

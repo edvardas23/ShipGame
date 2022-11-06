@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PacketClass
 {
-    internal class Adaptee_Reader : BinaryReader
+    public class Adaptee_Reader : BinaryReader
     {
         private NetworkStream _ns;
         public Adaptee_Reader(NetworkStream ns) : base(ns)

@@ -43,7 +43,7 @@ namespace GameClient.Net.Decorator
         }
         public void SetButtonBackground(Button button) 
         {
-            button.Background = Brushes.Red;
+            button.Background = Brushes.Moccasin;
         }
     }
 }
