@@ -10,38 +10,38 @@ using System.Windows.Media;
 
 namespace GameClient.Net.Decorator
 {
-    public class CarrierLoadable : Decorator
+    public class DestroyerDecorated : Decorator
     {
-        protected readonly List<string> planes = new List<string>();
-        public CarrierLoadable(Ship ship) : base(ship) { }
-        public void AddPlane(string name)
+        protected readonly List<string> bombs = new List<string>();
+        public DestroyerDecorated(Ship ship) : base(ship) { }
+        public void AddBomb(string name)
         {
-            planes.Add(name);
+            bombs.Add(name);
         }
-        public void RemovePlane(string name)
+        public void DropBomb(string name)
         {
-            if (planes.Contains(name))
+            if (bombs.Contains(name))
             {
-                planes.Remove(name);
+                bombs.Remove(name);
             }
             else
             {
-                MessageBox.Show("Plane doesn't exist");
+                MessageBox.Show("Weapon doesn't exist");
             }
         }
         public override string Display()
         {
             base.Display();
-            string msg = "Planes:\n";
-            foreach (string plane in planes)
+            string msg = "Bombs:\n";
+            foreach (string bomb in bombs)
             {
-                msg = msg + plane + "\n";
+                msg = msg + bomb + "\n";
             }
             return msg;
         }
         public void SetButtonBackground(Button button)
         {
-            button.Background = Brushes.LightGreen;
+            button.Background = Brushes.CadetBlue;
         }
     }
 }

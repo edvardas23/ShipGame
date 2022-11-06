@@ -91,33 +91,6 @@ namespace GameClient.Net
         }
         public void StartNewGameOnServer(int GameModeType)
         {
-            BattleshipModel battleship = new BattleshipModel();
-            MessageBox.Show(battleship.Display(), battleship.GetName());
-
-            CarrierModel carrier = new CarrierModel();
-            MessageBox.Show(carrier.Display(), "Carrier");
-
-            PatrolBoatModel patrolBoat = new PatrolBoatModel();
-            MessageBox.Show(patrolBoat.Display(), "Patrol boat");
-
-            MessageBox.Show("Decorator functionality");
-
-            /*BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(battleship);
-            battleshipDestroyable.AddRocket("Solid rocket");
-            battleshipDestroyable.AddRocket("Water rocket");
-            battleshipDestroyable.AddRocket("Thermal rocket");
-            MessageBox.Show(battleshipDestroyable.Display());
-            battleshipDestroyable.ShootRocket("Solid rocket");
-            MessageBox.Show(battleshipDestroyable.Display());*/
-
-            CarrierLoadable carrierLoadable = new CarrierLoadable(carrier);
-            carrierLoadable.AddPlane("Helicopter");
-            carrierLoadable.AddPlane("Aircraft");
-            carrierLoadable.AddPlane("Bomber");
-            MessageBox.Show(carrierLoadable.Display());
-            carrierLoadable.RemovePlane("Bomber");
-            MessageBox.Show(carrierLoadable.Display());
-
             var newGamePacket = new PacketBuilder_Adapter();
             newGamePacket.WriteOpCode(15);
             newGamePacket.WriteMessage("Naujas žaidimas" + GameModeType.ToString());

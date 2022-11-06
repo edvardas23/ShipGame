@@ -12,4 +12,8 @@
     <ProjectReference Include="..\PackageClass\PacketClass.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+
 </Project>

@@ -2,28 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows;
 
 namespace GameClient.Net.Decorator
 {
-    public class PatrolBoatArmed : Decorator
+    public class SubmarineDecorated : Decorator
     {
-        protected readonly List<string> weapons = new List<string>();
-        public PatrolBoatArmed(Ship ship) : base(ship) { }
-        public void AddWeapon(string name)
+        protected readonly List<string> armors = new List<string>();
+        public SubmarineDecorated(Ship ship) : base(ship) { }
+        public void AddArmor(string name)
         {
-            weapons.Add(name);
+            armors.Add(name);
         }
-        public void DropWeapon(string name)
+        public void DropArmor(string name)
         {
-            if (weapons.Contains(name))
+            if (armors.Contains(name))
             {
-                weapons.Remove(name);
+                armors.Remove(name);
             }
             else
             {
@@ -33,16 +32,16 @@ namespace GameClient.Net.Decorator
         public override string Display()
         {
             base.Display();
-            string msg = "Weapons:\n";
-            foreach (string weapon in weapons)
+            string msg = "Armors:\n";
+            foreach (string armor in armors)
             {
-                msg = msg + weapon + "\n";
+                msg = msg + armor + "\n";
             }
             return msg;
         }
         public void SetButtonBackground(Button button)
         {
-            button.Background = Brushes.DarkOrange;
+            button.Background = Brushes.Aquamarine;
         }
     }
 }
