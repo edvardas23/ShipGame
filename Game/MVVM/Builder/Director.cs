@@ -8,6 +8,7 @@ using System.Windows;
 using GameClient.MVVM.Core;
 using Game;
 using GameClient.MVVM.Model;
+using GameClient.MVVM.Model.PrototypeModels;
 
 namespace GameClient.MVVM.Builder
 {
@@ -20,7 +21,7 @@ namespace GameClient.MVVM.Builder
             set { builder = value; }
         }
 
-        public void BuildMinimalViableMap(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand)
+        public void BuildMinimalViableMap(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, Prototype prototype)
         {
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width2 = stackPanel.ActualWidth / Session.Instance.MapSize;
@@ -34,12 +35,12 @@ namespace GameClient.MVVM.Builder
                 stackPanel.Children.Add(newStackPanel);
                 for (int j = 0; j < y; j++)
                 {
-                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel);
+                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel, prototype);
                 }
             }
         }
 
-        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand)
+        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand, Prototype prototype)
         {
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width = stackPanel.ActualWidth / Session.Instance.MapSize;
@@ -58,7 +59,7 @@ namespace GameClient.MVVM.Builder
                     if (rand >= 48)
                         this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel);
                     else
-                        this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel);
+                        this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype);
                 }
             }
         }

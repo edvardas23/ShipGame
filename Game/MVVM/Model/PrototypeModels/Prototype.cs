@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.PrototypeModels
 {
-    class Prototype
+    public class Prototype
     {
         public string[] array = new string[10];
 

@@ -404,6 +404,11 @@ namespace GameClient.MVVM.ViewModel
         private void GenerateEmptyMap(string identifier)
         {
             Random rnd = new Random();
+
+            if (identifier == "m")
+            { 
+
+            }
             Prototype prototype = new Prototype(); 
             for (int i = 0; i < 10; i++)
             {
@@ -418,16 +423,19 @@ namespace GameClient.MVVM.ViewModel
 
             MainWindow.AppWindow.Dispatcher.Invoke(() =>
             {
-                MainWindow.AppWindow.ShipCoord.Text += "Laivų koordinačiu kopijos padarytos su prototype patternu: \n";
-                for (int i = 0; i < 10; i++)
+                if (identifier.Equals("m"))
                 {
-                    MainWindow.AppWindow.ShipCoord.Text += " " + clone.array[i];
+                    MainWindow.AppWindow.ShipCoord.Text += "Laivų koordinačiu kopijos padarytos su prototype patternu: \n";
+                    for (int i = 0; i < 10; i++)
+                    {
+                        MainWindow.AppWindow.ShipCoord.Text += " " + clone.array[i];
+                    }
                 }
                 Director director = new Director();
                 ConcreteBuilder builder = new ConcreteBuilder();
                 director.Builder = builder;
 
-                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand);
+                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone);
                /* StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
                 double width = stackPanel.ActualWidth / Session.Instance.MapSize;
                 double height = stackPanel.ActualHeight / Session.Instance.MapSize;

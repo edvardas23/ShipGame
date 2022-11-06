@@ -45,13 +45,13 @@ namespace GameClient.MVVM.Builder
             }
             else
             {
-                //rockTile.Background = Brushes.Green;
+
             }
             newStackPanel.Children.Add(rockTile);
             this.map.Add(rockTile);
         }
 
-        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel)
+        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype)
         {
             Tile tile = new Tile(x, y);
             SeaTile seaTile = new SeaTile(tile);
@@ -65,7 +65,13 @@ namespace GameClient.MVVM.Builder
             }
             else
             {
-                //seaTile.Background = Brushes.Green;
+                for (int k = 0; k < 10; k++)
+                {
+                    if (y.ToString() + x.ToString() == prototype.array[k])
+                    {
+                        seaTile.Background = Brushes.Green;
+                    }
+                }
             }
             newStackPanel.Children.Add(seaTile);
             this.map.Add(seaTile);
