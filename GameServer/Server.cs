@@ -5,7 +5,7 @@ using PacketClass;
 
 namespace GameSever
 {
-    class Observer
+    class Server
     {
         static List<Client> _users;
         static TcpListener _listener;

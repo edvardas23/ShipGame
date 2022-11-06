@@ -37,22 +37,22 @@ namespace GameServer
                         case 5:
                             var msg = _packetReader.ReadMessage();
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Gauta žinutė! {msg}");
-                            Observer.BroadcastMessage($"[{DateTime.Now}]: [{Username}]: {msg}");  
+                            Server.BroadcastMessage($"[{DateTime.Now}]: [{Username}]: {msg}");  
                             break;
                         case 15:  
                             var gameStartedMessage = _packetReader.ReadMessage(); 
                             Turn = true;
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Sukurtas žaidimas! {gameStartedMessage}");
-                            Observer.BroadcastGameStart($"[{DateTime.Now}]: [{Username}]: {gameStartedMessage}");
+                            Server.BroadcastGameStart($"[{DateTime.Now}]: [{Username}]: {gameStartedMessage}");
                             break;
                         case 20:
                             var tileAttacked = _packetReader.ReadMessage();
-                            Observer.BroadcastTileAttack($"{tileAttacked}", UID.ToString());
+                            Server.BroadcastTileAttack($"{tileAttacked}", UID.ToString());
                             Turn = false;
                             Console.WriteLine($"[{DateTime.Now}][{Username}]:Atakavo langelį! {tileAttacked}");   
                             break;
                         case 25:
-                            Observer.BroadcastUndoGameStart();
+                            Server.BroadcastUndoGameStart();
                             Console.WriteLine($"[{DateTime.Now}]:Žaidimo pradžia atšaukta!");
                             break;
                         default:
@@ -63,7 +63,7 @@ namespace GameServer
                 catch (Exception)
                 {
                     Console.WriteLine($"[{Username}]: Atsijungė!");
-                    Observer.BroadcastDisconnect(UID.ToString());
+                    Server.BroadcastDisconnect(UID.ToString());
                     ClientSocket.Close();
                     break;
                 }
