@@ -8,12 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameServer\GameServer.csproj" />
-    <ProjectReference Include="..\PackageClass\PacketClass.csproj" />
+    <Compile Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+    <Page Remove="Images\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <ProjectReference Include="..\GameServer\GameServer.csproj" />
+    <ProjectReference Include="..\PackageClass\PacketClass.csproj" />
   </ItemGroup>
 
 </Project>
