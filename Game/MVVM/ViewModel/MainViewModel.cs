@@ -506,7 +506,7 @@ namespace GameClient.MVVM.ViewModel
                 }*/
             });
         }   
-        private bool CheckUsers()
+        public bool CheckUsers()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -518,9 +518,9 @@ namespace GameClient.MVVM.ViewModel
                 }
                 else
                 {
-                    MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
-                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
-                    return true;
+                    MainWindow.AppWindow.StartNewGameButton.IsEnabled = false;
+                    MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Hidden;
+                    return false;
                 }
             });
             return false;
