@@ -8,6 +8,8 @@ using GameClient.MVVM.ViewModel;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Game;
+using System.Threading;
+using System;
 
 namespace TestProject
 {
@@ -218,24 +220,19 @@ namespace TestProject
             Assert.Equal("Armors:\nArmor1\n", submarineDecorated.Display());
         }
         // -------------------------------------------Edvardas --------------------------------------------------
-        /*[Theory]
-        [InlineData(0, false)]
+        [Theory]
         [InlineData(1, false)]
         [InlineData(2, true)]
+        [InlineData(3, true)]
+        [InlineData(4, true)]
         private async Task CheckUsers_Returns(int count, bool expected)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.InitializeComponent();
-            if (null == System.Windows.Application.Current)
-            {
-                new System.Windows.Application();
-            }
-            
+            InitUI();
             MainViewModel mainViewModel = new MainViewModel();
             mainViewModel.Users = GetUsers(count);
-            bool returs = mainViewModel.CheckUsers();
+            bool returns = mainViewModel.CheckUsers();
 
-            Assert.Equal(expected, returs);
+            Assert.Equal(expected, returns);
         }
         private ObservableCollection<UserModel> GetUsers(int count)
         {
@@ -245,7 +242,32 @@ namespace TestProject
                 users.Add(new UserModel());
             }
             return users;
-        }*/
+        }
+        private static void StaThreadWrapper(Action action)
+        {
+            var t = new Thread(o =>
+            {
+                action();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+        private void InitUI()
+        {
+            StaThreadWrapper(() =>
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.InitializeComponent();
+                mainWindow.Show();
+            });
+
+            if (null == System.Windows.Application.Current)
+            {
+                new System.Windows.Application();
+            }
+        }
+
         // -------------------------------------------Edvardas --------------------------------------------------
     }
     
