@@ -513,20 +513,28 @@ namespace GameClient.MVVM.ViewModel
             {
                 if (Users.Count >= 2)
                 {
-                    if (MainWindow.AppWindow.StartNewGameButton != null)
-                    { 
-                        MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
-                        MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                    try
+                    {
+                        if (MainWindow.AppWindow.StartNewGameButton != null)
+                        {
+                            MainWindow.AppWindow.StartNewGameButton.IsEnabled = true;
+                            MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Visible;
+                        }
                     }
+                    catch (Exception ex) { }
                     flag = true;
                 }
                 else
                 {
-                    if (MainWindow.AppWindow.StartNewGameButton != null)
+                    try
                     {
-                        MainWindow.AppWindow.StartNewGameButton.IsEnabled = false;
-                        MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Hidden;
+                        if (MainWindow.AppWindow.StartNewGameButton != null)
+                        {
+                            MainWindow.AppWindow.StartNewGameButton.IsEnabled = false;
+                            MainWindow.AppWindow.StartNewGameButton.Visibility = Visibility.Hidden;
+                        }
                     }
+                    catch (Exception ex) { }
                     flag = false;
                 }
             });
