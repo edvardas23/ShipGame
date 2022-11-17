@@ -14,16 +14,26 @@ using System;
 using System.Collections.ObjectModel;
 using GameClient.MVVM.ViewModel;
 using Game;
+using GameServer;
+using GameSever;
+using System.Threading.Tasks;
 
 namespace TestProject;
 
 [TestClass]
 public class UnitTest
 {
+    public Server server;
+    MainViewModel mainViewModel;
+    MainWindow mainWindow;
+
     [TestInitialize]
     public void SetUpTests()
     {
-        InitUI();   
+        InitUI();
+        server = new Server();
+        mainViewModel = new MainViewModel();
+
     }
     //System.InvalidOperationException: The calling thread must be STA, because many UI components require this.
     /*[TestMethod]
@@ -239,7 +249,7 @@ public class UnitTest
     public void CheckUsers_Returns(int count, bool expected)
     {  
         //InitUI();
-        MainViewModel mainViewModel = new MainViewModel();
+        
         mainViewModel.Users = GetUsers(count);
         bool returns = mainViewModel.CheckUsers();
 
@@ -268,7 +278,7 @@ public class UnitTest
     {
         StaThreadWrapper(() =>
         {
-            MainWindow mainWindow = new MainWindow();
+            mainWindow = new MainWindow();
             mainWindow.InitializeComponent();
             mainWindow.Show();
         });
