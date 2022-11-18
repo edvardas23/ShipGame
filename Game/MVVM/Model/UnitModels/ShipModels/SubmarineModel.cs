@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.UnitModels.ShipModels
 {
-    class SubmarineModel : Ship
+    public class SubmarineModel : Ship
     {
         private int specialAbility;
         private int isSubmerged;

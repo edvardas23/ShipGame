@@ -13,26 +13,28 @@ using System.Threading;
 using System;
 using System.Collections.ObjectModel;
 using GameClient.MVVM.ViewModel;
+using GameClient.MVVM.Model.UnitModels.ShipModels;
 using Game;
 using GameServer;
 using GameSever;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TestProject;
 
 [TestClass]
 public class UnitTest
 {
-    public Server server;
     MainViewModel mainViewModel;
     MainWindow mainWindow;
-
+    public static AbstractFactory factory = new AbstractListFactory();
     [TestInitialize]
     public void SetUpTests()
     {
         InitUI();
-        server = new Server();
         mainViewModel = new MainViewModel();
+        //factory = new AbstractListFactory();
+        //mainViewModel.ConnectToSeverCommand();
 
     }
     //System.InvalidOperationException: The calling thread must be STA, because many UI components require this.
@@ -245,15 +247,20 @@ public class UnitTest
     [DataRow(2, true)]
     [DataRow(3, true)]
     [DataRow(4, true)]
-    [DataTestMethod]
+    [DataTestMethod] // Testuojame ar metodas keièiantis þaidimo pradþios aktyvumà gràþina tinkamas reikðmes.
     public void CheckUsers_Returns(int count, bool expected)
-    {  
-        //InitUI();
-        
+    {    
         mainViewModel.Users = GetUsers(count);
         bool returns = mainViewModel.CheckUsers();
 
         Assert.AreEqual(expected, returns);
+    }
+
+    [DataTestMethod]
+    [DynamicData(nameof(TestFactoryData))] // Testuojame ar AbstractFactory sukuria tinkamo modelio objektus.
+    public void TestAbstractFactory(Ship ship, Ship expected)
+    {
+        Assert.AreEqual(ship.GetType(), expected.GetType());
     }
     private ObservableCollection<UserModel> GetUsers(int count)
     {
@@ -288,6 +295,21 @@ public class UnitTest
             new System.Windows.Application();
         }
     }
+    private static IEnumerable<object[]> TestFactoryData // Inicijuojame duomenis absctract factory testavimui.
+    {
+        get
+        {
+            return new[]
+            {
+                 new object[] { factory.CreateBattleship(),  new BattleshipModel()},
+                 new object[] { factory.CreatePatrol(),  new PatrolBoatModel()},
+                 new object[] { factory.CreateCarrier(),  new CarrierModel()},
+                 new object[] { factory.CreateDestroyer(),  new DestroyerModel()},
+                 new object[] { factory.CreateSubmarine(),  new SubmarineModel()}
+            };
+        }
+    }
+
 
     // -------------------------------------------Edvardas --------------------------------------------------
 }

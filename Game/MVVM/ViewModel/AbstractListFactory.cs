@@ -8,7 +8,7 @@ using GameClient.MVVM.Model.UnitModels.ShipModels;
 
 namespace GameClient.MVVM.ViewModel
 {
-    class AbstractListFactory : AbstractFactory
+    public class AbstractListFactory : AbstractFactory
     {
 
         public override Ship CreateBattleship()

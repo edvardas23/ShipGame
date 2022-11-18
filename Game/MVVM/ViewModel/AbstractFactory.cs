@@ -10,7 +10,7 @@ using GameClient.MVVM.Model.UnitModels.ShipModels;
 
 namespace GameClient.MVVM.ViewModel
 {
-    abstract class AbstractFactory
+    public abstract class AbstractFactory
     {
         public List<Ship> Ships = new List<Ship>();
 

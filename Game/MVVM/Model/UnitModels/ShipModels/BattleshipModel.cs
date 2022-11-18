@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClient.MVVM.Model.UnitModels.ShipModels
 {
-    class BattleshipModel : Ship
+    public class BattleshipModel : Ship
     {
         private int specialAbility;
         private readonly string name = "Battleship";
