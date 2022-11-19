@@ -19,6 +19,9 @@ using GameServer;
 using GameSever;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using GameClient.MVVM.Model.PrototypeModels;
+using GameClient.MVVM.Model.FacadeModels;
+using static GameClient.MVVM.Model.FacadeModels.Facade;
 
 namespace TestProject;
 
@@ -312,4 +315,30 @@ public class UnitTest
 
 
     // -------------------------------------------Edvardas --------------------------------------------------
+
+    // ===========================================Arturas====================================================
+
+    [TestMethod] // testuojame ar gerai veikia kopijavimo funkcija
+    public void TestPrototypeShallowCopy()
+    {
+        Prototype prototype = new Prototype();
+        for (int i = 0; i < 10; i++)
+        {
+            prototype.array[i] = i.ToString();
+        }
+        Prototype clone = prototype.ShallowCopy();
+
+        Assert.AreEqual(clone.array, prototype.array);
+    }
+    [TestMethod] // testuojame ar grazina gera subsystema
+    public void TestFacadeClassicMode()
+    {
+        ClassicModeSubsystem sub = new ClassicModeSubsystem();
+        string expected = "Klasikinis žaidimo režimas";
+
+        Assert.AreEqual(sub.ModeName(), expected);
+    }
+
+    // ===========================================Arturas====================================================
+
 }
