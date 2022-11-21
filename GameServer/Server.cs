@@ -12,15 +12,17 @@ namespace GameSever
         
         static void Main(string[] args)
         {
-
+            Console.WriteLine("Serveris startavo");
             _users = new List<Client>();
             _listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6969);
-            _listener.Start();
+            try { 
+                _listener.Start();
+            }
+            catch { }
             while (true)
             {
                 var client = new Client(_listener.AcceptTcpClient());
                 _users.Add(client);
-
                 BroadcastConnection();
             }
        
@@ -38,6 +40,7 @@ namespace GameSever
                     user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
                 }
             }
+            Console.WriteLine("TEST");
         }
         public static void BroadcastMessage(string message)
         {

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using GameClient.MVVM.Model.PrototypeModels;
 using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
+using System.Diagnostics;
 
 namespace TestProject;
 
@@ -30,16 +31,25 @@ public class UnitTest
 {
     MainViewModel mainViewModel;
     MainWindow mainWindow;
+    Process process;
+    public static GameClient.Net.Server server;
     public static AbstractFactory factory = new AbstractListFactory();
     [TestInitialize]
     public void SetUpTests()
     {
+        /*Process[] processCollection = Process.GetProcesses();
+        foreach (Process p in processCollection)
+        {
+            if (p.ProcessName == "GameServer")
+            {
+                p.Kill();
+            }
+        }*/
         InitUI();
         mainViewModel = new MainViewModel();
-        //factory = new AbstractListFactory();
-        //mainViewModel.ConnectToSeverCommand();
-
+        //process = StartApplication();
     }
+    #region Arnas
     //System.InvalidOperationException: The calling thread must be STA, because many UI components require this.
     /*[TestMethod]
     [STAThread]// Testuojama ar tile yra tinkamoje pozicijoje ir ar þaidëjas sugebës atlikti ðûvá
@@ -244,6 +254,9 @@ public class UnitTest
         submarineDecorated.DropArmor("Armor2");
         Assert.AreEqual("Armors:\nArmor1\n", submarineDecorated.Display());
     }
+    #endregion
+
+    #region Edvardas
     // -------------------------------------------Edvardas --------------------------------------------------
     [DataRow(0, false)]
     [DataRow(1, false)]
@@ -252,7 +265,7 @@ public class UnitTest
     [DataRow(4, true)]
     [DataTestMethod] // Testuojame ar metodas keièiantis þaidimo pradþios aktyvumà gràþina tinkamas reikðmes.
     public void CheckUsers_Returns(int count, bool expected)
-    {    
+    {
         mainViewModel.Users = GetUsers(count);
         bool returns = mainViewModel.CheckUsers();
 
@@ -264,6 +277,23 @@ public class UnitTest
     public void TestAbstractFactory(Ship ship, Ship expected)
     {
         Assert.AreEqual(ship.GetType(), expected.GetType());
+    }
+
+    [TestMethod]
+    public void ServerStartsSuccessfullyTest()
+    {
+        process = StartApplication();
+        var output = process.StandardOutput.ReadToEnd();
+        process.Kill();
+        Assert.IsTrue(output.Contains("Serveris startavo"));
+    }
+    [TestMethod]
+    public void BroadcastConnectionTest()
+    {
+        process = StartApplication();
+        mainViewModel._server.ConnectToSever("Edvardas");
+        var output = process.StandardOutput.ReadToEnd();
+        Assert.IsTrue(mainViewModel._server._client.Connected);
     }
     private ObservableCollection<UserModel> GetUsers(int count)
     {
@@ -290,7 +320,7 @@ public class UnitTest
         {
             mainWindow = new MainWindow();
             mainWindow.InitializeComponent();
-            mainWindow.Show();
+            //mainWindow.Show();
         });
 
         if (null == System.Windows.Application.Current)
@@ -312,10 +342,32 @@ public class UnitTest
             };
         }
     }
+    protected Process StartApplication()
+    {
+        ProcessStartInfo processStartInfo = new ProcessStartInfo();
 
+        //ÈIA ÁSIDËTI SAVO GAME SERVER.EXE PATH
+        processStartInfo.FileName = @"C:\Users\Edvardas\Desktop\Laivai\ShipGame\GameServer\bin\Debug\net6.0-windows\GameServer.exe";
+        processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        processStartInfo.CreateNoWindow = true;
+        processStartInfo.UseShellExecute = false;
+        processStartInfo.RedirectStandardInput = true;
+        processStartInfo.RedirectStandardOutput = true;
+
+        return Process.Start(processStartInfo);
+    }
+    protected Task<string?> WaitForResponse(Process process)
+    {
+        return Task.Run(() =>
+        {
+
+            var output = process.StandardOutput.ReadLine();
+            return output;
+        });
+    }
 
     // -------------------------------------------Edvardas --------------------------------------------------
-
+    #endregion
     // ===========================================Arturas====================================================
 
     [TestMethod] // testuojame ar gerai veikia kopijavimo funkcija

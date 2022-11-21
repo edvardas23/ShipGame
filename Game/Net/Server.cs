@@ -8,9 +8,9 @@ using PacketClass;
 
 namespace GameClient.Net
 {
-    class Server
+    public class Server
     {
-        TcpClient _client;
+        public TcpClient _client;
         public PacketReader PacketReader;
 
         public event Action connectedEvent;
@@ -25,6 +25,10 @@ namespace GameClient.Net
         }
         public void ConnectToSever(string username)
         {
+            if (_client == null)
+            {
+                _client = new TcpClient();
+            }
             if (!_client.Connected)
             {
                 _client.Connect("127.0.0.1", 6969);
@@ -75,7 +79,7 @@ namespace GameClient.Net
                             undoGameStart?.Invoke();
                             break;
                         default:
-                            Console.WriteLine("ah yes...");
+                            //Console.WriteLine("ah yes...");
                             break;
                     }
                 }

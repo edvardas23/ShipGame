@@ -38,7 +38,7 @@ namespace GameClient.MVVM.ViewModel
         public RelayCommand ReadyForGameCommand { get; set; }
         public static RelayCommand AttackTileCommand { get; set; }
         public RelayCommand UndoGameStartCommand { get; set; }
-        private Server _server;
+        public Server _server;
         public Player firstPlayer { get; set; }
         public Player secondPlayer { get; set; }
         public static string TileName { get; set; }
