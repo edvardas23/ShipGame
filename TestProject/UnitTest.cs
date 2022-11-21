@@ -34,20 +34,17 @@ public class UnitTest
     Process process;
     public static GameClient.Net.Server server;
     public static AbstractFactory factory = new AbstractListFactory();
-    [TestInitialize]
+    [TestInitialize()] // SETUP
     public void SetUpTests()
-    {
-        /*Process[] processCollection = Process.GetProcesses();
-        foreach (Process p in processCollection)
-        {
-            if (p.ProcessName == "GameServer")
-            {
-                p.Kill();
-            }
-        }*/
+    {   
         InitUI();
         mainViewModel = new MainViewModel();
-        //process = StartApplication();
+        process = StartApplication();
+    }
+    [TestCleanup()] // TEARDOWN
+    public void Teardown()
+    {
+        process.Kill();
     }
     #region Arnas
     //System.InvalidOperationException: The calling thread must be STA, because many UI components require this.
