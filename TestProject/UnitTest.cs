@@ -279,15 +279,12 @@ public class UnitTest
     [TestMethod]
     public void ServerStartsSuccessfullyTest()
     {
-        process = StartApplication();
         var output = process.StandardOutput.ReadToEnd();
-        process.Kill();
         Assert.IsTrue(output.Contains("Serveris startavo"));
     }
     [TestMethod]
     public void BroadcastConnectionTest()
     {
-        process = StartApplication();
         mainViewModel._server.ConnectToSever("Edvardas");
         var output = process.StandardOutput.ReadToEnd();
         Assert.IsTrue(mainViewModel._server._client.Connected);
