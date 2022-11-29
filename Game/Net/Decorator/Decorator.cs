@@ -30,5 +30,16 @@ namespace GameClient.Net.Decorator
                 return "";
             }
         }
+
+        public override string DisplaySunk()
+        {
+            if (ship != null)
+            { 
+                return ship.DisplaySunk();
+            } else
+            {
+                return "";
+            }
+        }
     }
 }

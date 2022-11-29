@@ -30,7 +30,7 @@ namespace GameClient.Net.Decorator
                 MessageBox.Show("Weapon doesn't exist");
             }
         }
-        public override string Display()
+        public sealed override string Display()
         {
             base.Display();
             string msg = "Weapons:\n";

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameClient.MVVM.Model.TileModels;
+using GameClient.MVVM.Model.UnitModels.ShipModels;
 
 namespace GameClient.MVVM.Model.UnitModels
 {
-    public class Ship : Unit
+    public abstract class Ship : Unit
     {
         private int size;
         private int hp;
@@ -38,8 +39,20 @@ namespace GameClient.MVVM.Model.UnitModels
         }
         public virtual string Display()
         {
-            string msg = "HP: " + hp as string;
+            string msg;
+            if (this.GetType() == typeof(SubmarineModel))
+            {
+                msg = this.Display();
+            } else if (this.IsShipSunk())
+            {
+                msg = this.DisplaySunk();
+            } else
+            {
+                msg = "HP: " + hp as string;
+            }
             return msg;
         }
+
+        public abstract string DisplaySunk();
     }
 }

@@ -43,5 +43,10 @@ namespace GameClient.Net.Decorator
         {
             button.Background = Brushes.CadetBlue;
         }
+
+        public override string DisplaySunk()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

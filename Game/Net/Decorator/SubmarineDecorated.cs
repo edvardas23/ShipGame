@@ -29,7 +29,7 @@ namespace GameClient.Net.Decorator
                 MessageBox.Show("Weapon doesn't exist");
             }
         }
-        public override string Display()
+        public sealed override string Display()
         {
             base.Display();
             string msg = "Armors:\n";
@@ -42,6 +42,17 @@ namespace GameClient.Net.Decorator
         public void SetButtonBackground(Button button)
         {
             button.Background = Brushes.Aquamarine;
+        }
+
+        public override string DisplaySunk()
+        {
+            base.Display();
+            string msg = "Armors:\n";
+            foreach (string armor in armors)
+            {
+                msg = msg + armor + "\n";
+            }
+            return msg;
         }
     }
 }

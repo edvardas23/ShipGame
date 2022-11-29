@@ -357,9 +357,14 @@ namespace GameClient.MVVM.ViewModel
                         GenerateEmptyMap("m");
                         List<Ship> ships = new List<Ship>();
                         Unit unit = new Unit(new List<Tile>(3));
-                        Ship ship = new Ship(unit);
+                        Ship ship = new BattleshipModel((Ship)unit);
+                        Ship ship2 = new CarrierModel((Ship)unit);
+                        Ship ship3 = new DestroyerModel((Ship)unit);
+                        Ship ship4 = new PatrolBoatModel((Ship)unit);
                         ships.Add(ship);
-                        ships.Add(ship);
+                        ships.Add(ship2);
+                        ships.Add(ship3);
+                        ships.Add(ship4);
                         DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();

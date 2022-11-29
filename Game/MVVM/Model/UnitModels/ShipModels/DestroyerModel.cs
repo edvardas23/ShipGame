@@ -29,5 +29,17 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         {
 
         }
+
+        public sealed override string Display()
+        {
+            string msg = "Name -----" + name;
+            return msg;
+        }
+
+        public sealed override string DisplaySunk()
+        {
+            string msg = name + " has been sunk";
+            return msg;
+        }
     }
 }

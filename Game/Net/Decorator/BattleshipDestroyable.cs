@@ -31,7 +31,7 @@ namespace GameClient.Net.Decorator
                 MessageBox.Show("Rocket doesn't exist");
             }
         }
-        public override string Display()
+        public sealed override string Display()
         {
             base.Display();
             string msg = "Rockets:\n";
@@ -44,6 +44,17 @@ namespace GameClient.Net.Decorator
         public void SetButtonBackground(Button button) 
         {
             button.Background = Brushes.Moccasin;
+        }
+
+        public override string DisplaySunk()
+        {
+            base.DisplaySunk();
+            string msg = "Rockets:\n";
+            foreach (string rocket in rockets)
+            {
+                msg = msg + rocket + "\n";
+            }
+            return msg;
         }
     }
 }

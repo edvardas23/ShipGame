@@ -9,7 +9,7 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
     public class SubmarineModel : Ship
     {
         private int specialAbility;
-        private int isSubmerged;
+        private bool isSubmerged;
         private string name = "Submarine";
 
         public int SpecialAbility
@@ -17,7 +17,7 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             get { return specialAbility; }
         }
 
-        public int IsSubmerged
+        public bool IsSubmerged
         {
             get { return isSubmerged; }
         }
@@ -35,6 +35,35 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         public void UseSpecialAbility()
         {
 
+        }
+
+        public sealed override string Display()
+        {
+            string submerged;
+            if (IsSubmerged)
+            {
+                submerged = "Ship is submerged";
+            } else
+            {
+                submerged = "Ship is not submerged";
+            }
+            string msg = "Name ----- " + name + ". " + submerged;
+            return msg;
+        }
+
+        public sealed override string DisplaySunk()
+        {
+            string submerged;
+            if (IsSubmerged)
+            {
+                submerged = "submerged";
+            }
+            else
+            {
+                submerged = "submerged";
+            }
+            string msg = name + " has been sunk while it was " + submerged;
+            return msg;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace GameClient.Net.Decorator
                 MessageBox.Show("Plane doesn't exist");
             }
         }
-        public override string Display()
+        public sealed override string Display()
         {
             base.Display();
             string msg = "Planes:\n";
