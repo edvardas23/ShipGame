@@ -29,7 +29,7 @@ namespace TestProject;
 [TestClass]
 public class UnitTest
 {
-    MainViewModel mainViewModel;
+    MainViewModel _mainViewModel;
     MainWindow mainWindow;
     Process process;
     public static GameClient.Net.Server server;
@@ -91,7 +91,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus raketà "Rocket1" Display teisingai atvaizduos raketø sàraðà
     public void TestBattleshipDestroyableAddAndDisplayRockets()
     {
-        Ship ship = new Ship();
+        Ship ship = new BattleshipModel();
         BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(ship);
         battleshipDestroyable.AddRocket("Rocket1");
         Assert.AreEqual("Rockets:\nRocket1\n", battleshipDestroyable.Display());
@@ -100,7 +100,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar NEpridëjus raketos "Rocket1" Display teisingai atvaizduos raketø sàraðà
     public void TestBattleshipDestroyableAddAndDisplayEmptyRockets()
     {
-        Ship ship = new Ship();
+        Ship ship = new BattleshipModel();
         BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(ship);
         Assert.AreEqual("Rockets:\n", battleshipDestroyable.Display());
     }
@@ -108,7 +108,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus raketas "Rocket1" ir "Rocket2", tuomet iððovus "Rocket1" Display teisingai atvaizduos raketø sàraðà
     public void TestBattleshipDestroyableAddShootAndDisplayRocketsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new BattleshipModel();
         BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(ship);
         battleshipDestroyable.AddRocket("Rocket1");
         battleshipDestroyable.AddRocket("Rocket2");
@@ -130,7 +130,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus lëktuvà "Plane1" Display teisingai atvaizduos lëktuvø sàraðà
     public void TestCarrierLoadableAddAndDisplayPlanes()
     {
-        Ship ship = new Ship();
+        Ship ship = new CarrierModel();
         CarrierLoadable carrierLoadable = new CarrierLoadable(ship);
         carrierLoadable.AddPlane("Plane1");
         Assert.AreEqual("Planes:\nPlane1\n", carrierLoadable.Display());
@@ -139,7 +139,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar NEpridëjus lëktuvo "Plane1" Display teisingai atvaizduos lëktuvø sàraðà
     public void TestCarrierLoadableAddAndDisplayEmptyPlanesList()
     {
-        Ship ship = new Ship();
+        Ship ship = new CarrierModel();
         CarrierLoadable carrierLoadable = new CarrierLoadable(ship);
         Assert.AreEqual("Planes:\n", carrierLoadable.Display());
     }
@@ -147,7 +147,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus lëktuvus "Plane1" ir "Plane2", tuomet iðëmus "Plane1" Display teisingai atvaizduos lëktuvø sàraðà
     public void TestCarrierLoadableAddPlanesRemovePlaneAndDisplayPlanesList()
     {
-        Ship ship = new Ship();
+        Ship ship = new CarrierModel();
         CarrierLoadable carrierLoadable = new CarrierLoadable(ship);
         carrierLoadable.AddPlane("Plane1");
         carrierLoadable.AddPlane("Plane2");
@@ -169,7 +169,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus bombà "Bomb1" Display teisingai atvaizduos bombø sàraðà
     public void TestDestroyerDecoratedAddAndDisplayBombs()
     {
-        Ship ship = new Ship();
+        Ship ship = new DestroyerModel();
         DestroyerDecorated destroyerDecorated = new DestroyerDecorated(ship);
         destroyerDecorated.AddBomb("Bomb1");
         Assert.AreEqual("Bombs:\nBomb1\n", destroyerDecorated.Display());
@@ -178,7 +178,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar NEpridëjus bombos "Bomb1" Display teisingai atvaizduos bombø sàraðà
     public void TestDestroyerDecoratedAddAndDisplayEmptyBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new DestroyerModel();
         DestroyerDecorated destroyerDecorated = new DestroyerDecorated(ship);
         Assert.AreEqual("Bombs:\n", destroyerDecorated.Display());
     }
@@ -186,7 +186,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus bombas "Bomb1" ir "Bomb2", tuomet iðëmus "Bomb2" Display teisingai atvaizduos bombø sàraðà
     public void TestDestroyerDecoratedAddBombsDropBombsAndDisplayBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new DestroyerModel();
         DestroyerDecorated destroyerDecorated = new DestroyerDecorated(ship);
         destroyerDecorated.AddBomb("Bomb1");
         destroyerDecorated.AddBomb("Bomb2");
@@ -198,7 +198,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus ginklà "Weapon1" Display teisingai atvaizduos ginklø sàraðà
     public void TestPatrolBoatArmedAddAndDisplayBombs()
     {
-        Ship ship = new Ship();
+        Ship ship = new PatrolBoatModel();
         PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(ship);
         patrolBoatArmed.AddWeapon("Weapon1");
         Assert.AreEqual("Weapons:\nWeapon1\n", patrolBoatArmed.Display());
@@ -207,7 +207,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar NEpridëjus ginklo "Weapon1" Display teisingai atvaizduos ginklø sàraðà
     public void TestPatrolBoatArmedAddAndDisplayEmptyBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new PatrolBoatModel();
         PatrolBoatArmed destroyerDecorated = new PatrolBoatArmed(ship);
         Assert.AreEqual("Weapons:\n", destroyerDecorated.Display());
     }
@@ -215,7 +215,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus ginklus "Weapon1" ir "Weapon2", tuomet iðëmus "Weapon2" Display teisingai atvaizduos ginklø sàraðà
     public void TestPatrolBoatArmedAddBombsDropBombsAndDisplayBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new PatrolBoatModel();
         PatrolBoatArmed destroyerDecorated = new PatrolBoatArmed(ship);
         destroyerDecorated.AddWeapon("Weapon1");
         destroyerDecorated.AddWeapon("Weapon2");
@@ -227,7 +227,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus ginklà "Weapon1" Display teisingai atvaizduos ginklø sàraðà
     public void TestSubmarineDecoratedAddAndDisplayBombs()
     {
-        Ship ship = new Ship();
+        Ship ship = new SubmarineModel();
         SubmarineDecorated submarineDecorated = new SubmarineDecorated(ship);
         submarineDecorated.AddArmor("Armor1");
         Assert.AreEqual("Armors:\nArmor1\n", submarineDecorated.Display());
@@ -236,7 +236,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar NEpridëjus ðarvo "Armor1" Display teisingai atvaizduos ðarvø sàraðà
     public void TestSubmarineDecoratedAddAndDisplayEmptyBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new SubmarineModel();
         SubmarineDecorated submarineDecorated = new SubmarineDecorated(ship);
         Assert.AreEqual("Armors:\n", submarineDecorated.Display());
     }
@@ -244,7 +244,7 @@ public class UnitTest
     [TestMethod]// Testuojama ar pridëjus ðarvus "Armor1" ir "Armor2", tuomet iðëmus "Armor2" Display teisingai atvaizduos ðarvø sàraðà
     public void TestSubmarineDecoratedAddBombsDropBombsAndDisplayBombsList()
     {
-        Ship ship = new Ship();
+        Ship ship = new SubmarineModel();
         SubmarineDecorated submarineDecorated = new SubmarineDecorated(ship);
         submarineDecorated.AddArmor("Armor1");
         submarineDecorated.AddArmor("Armor2");
