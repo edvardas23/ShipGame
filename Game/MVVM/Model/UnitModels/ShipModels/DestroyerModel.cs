@@ -19,9 +19,13 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         public DestroyerModel(Ship ship) : base(ship)
         {
             this.specialAbility = SpecialAbility;
-        }
+		}
+		public DestroyerModel(Unit ship) : base(ship)
+		{
+			this.specialAbility = SpecialAbility;
+		}
 
-        public DestroyerModel() : base()
+		public DestroyerModel() : base()
         {
         }
 

@@ -357,10 +357,10 @@ namespace GameClient.MVVM.ViewModel
                         GenerateEmptyMap("m");
                         List<Ship> ships = new List<Ship>();
                         Unit unit = new Unit(new List<Tile>(3));
-                        Ship ship = new BattleshipModel((Ship)unit);
-                        Ship ship2 = new CarrierModel((Ship)unit);
-                        Ship ship3 = new DestroyerModel((Ship)unit);
-                        Ship ship4 = new PatrolBoatModel((Ship)unit);
+                        Ship ship = new BattleshipModel(unit);
+                        Ship ship2 = new CarrierModel(unit);
+                        Ship ship3 = new DestroyerModel(unit);
+                        Ship ship4 = new PatrolBoatModel(unit);
                         ships.Add(ship);
                         ships.Add(ship2);
                         ships.Add(ship3);

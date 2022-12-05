@@ -13,12 +13,12 @@ namespace GameClient.Net
         public TcpClient _client;
         public PacketReader PacketReader;
 
-        public event Action connectedEvent;
-        public event Action messageReceivedEvent;
-        public event Action userDisconnectedEvent;
-        public event Action startGameEvent; // Pradedamas žaidimas
-        public event Action attackEnemyTile;
-        public event Action undoGameStart;
+        public event Action? connectedEvent;
+        public event Action? messageReceivedEvent;
+        public event Action? userDisconnectedEvent;
+        public event Action? startGameEvent; // Pradedamas žaidimas
+        public event Action? attackEnemyTile;
+        public event Action? undoGameStart;
         public Server()
         {
             _client = new TcpClient();

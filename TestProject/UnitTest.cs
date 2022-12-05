@@ -38,7 +38,7 @@ public class UnitTest
     public void SetUpTests()
     {   
         InitUI();
-        mainViewModel = new MainViewModel();
+        _mainViewModel = new MainViewModel();
         process = StartApplication();
     }
     [TestCleanup()] // TEARDOWN
@@ -263,8 +263,8 @@ public class UnitTest
     [DataTestMethod] // Testuojame ar metodas keièiantis þaidimo pradþios aktyvumà gràþina tinkamas reikðmes.
     public void CheckUsers_Returns(int count, bool expected)
     {
-        mainViewModel.Users = GetUsers(count);
-        bool returns = mainViewModel.CheckUsers();
+        _mainViewModel.Users = GetUsers(count);
+        bool returns = _mainViewModel.CheckUsers();
 
         Assert.AreEqual(expected, returns);
     }
@@ -285,9 +285,9 @@ public class UnitTest
     [TestMethod]
     public void BroadcastConnectionTest()
     {
-        mainViewModel._server.ConnectToSever("Edvardas");
+        _mainViewModel._server.ConnectToSever("Edvardas");
         var output = process.StandardOutput.ReadToEnd();
-        Assert.IsTrue(mainViewModel._server._client.Connected);
+        Assert.IsTrue(_mainViewModel._server._client.Connected);
     }
     private ObservableCollection<UserModel> GetUsers(int count)
     {

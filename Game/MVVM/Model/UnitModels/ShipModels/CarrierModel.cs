@@ -20,8 +20,12 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         {
             this.specialAbility = SpecialAbility;
         }
+		public CarrierModel(Unit ship) : base(ship)
+		{
+			this.specialAbility = SpecialAbility;
+		}
 
-        public CarrierModel()
+		public CarrierModel()
         {
         }
 

@@ -19,9 +19,13 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
         public PatrolBoatModel(Ship ship) : base(ship)
         {
             this.specialAbility = SpecialAbility;
-        }
+		}
+		public PatrolBoatModel(Unit ship) : base(ship)
+		{
+			this.specialAbility = SpecialAbility;
+		}
 
-        public PatrolBoatModel()
+		public PatrolBoatModel()
         {
         }
 
