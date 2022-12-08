@@ -9,6 +9,7 @@ using GameClient.MVVM.Core;
 using Game;
 using GameClient.MVVM.Model;
 using GameClient.MVVM.Model.PrototypeModels;
+using GameClient.MVVM.Model.UnitModels.FlyWeight;
 
 namespace GameClient.MVVM.Builder
 {
@@ -21,12 +22,12 @@ namespace GameClient.MVVM.Builder
             set { builder = value; }
         }
 
-        public void BuildMinimalViableMap(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, Prototype prototype)
+        public void BuildMinimalViableMap(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, Prototype prototype, FlyweightFactory factory)
         {
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width2 = stackPanel.ActualWidth / Session.Instance.MapSize;
             double height2 = stackPanel.ActualHeight / Session.Instance.MapSize;
-            for (int i = 0; i < x; i++)
+			for (int i = 0; i < x; i++)
             {
                 StackPanel newStackPanel = new StackPanel();
                 newStackPanel.Name = identifier + "StackPanel" + i.ToString();
@@ -35,12 +36,12 @@ namespace GameClient.MVVM.Builder
                 stackPanel.Children.Add(newStackPanel);
                 for (int j = 0; j < y; j++)
                 {
-                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel, prototype);
+                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel, prototype, factory);
                 }
             }
         }
 
-        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand, Prototype prototype)
+        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand, Prototype prototype, FlyweightFactory factory)
         {
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width = stackPanel.ActualWidth / Session.Instance.MapSize;
@@ -57,11 +58,11 @@ namespace GameClient.MVVM.Builder
                     Random rnd = new Random();
                     int rand = rnd.Next(1, 50);;
                     if (rand >= 48)
-                        this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel);
+                        this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
                     else
-                        this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype);
+                        this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
                 }
             }
         }
-    }
+	}
 }

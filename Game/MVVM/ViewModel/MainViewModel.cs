@@ -20,6 +20,7 @@ using GameClient.MVVM.Builder;
 using GameClient.Net.Decorator;
 using System.Runtime.CompilerServices;
 using GameClient.MVVM.Bridge;
+using GameClient.MVVM.Model.UnitModels.FlyWeight;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -439,8 +440,8 @@ namespace GameClient.MVVM.ViewModel
                 Director director = new Director();
                 ConcreteBuilder builder = new ConcreteBuilder();
                 director.Builder = builder;
-
-                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone);
+				var factory = new FlyweightFactory();
+                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory);
                /* StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
                 double width = stackPanel.ActualWidth / Session.Instance.MapSize;
                 double height = stackPanel.ActualHeight / Session.Instance.MapSize;

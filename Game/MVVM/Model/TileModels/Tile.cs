@@ -32,11 +32,13 @@ namespace GameClient.MVVM.Model.TileModels
         public int X
         {
             get { return x; }
-        }
+			set { x = value; }
+		}
 
         public int Y
         {
             get { return y; }
+			set { y = value; }
         }
 
         public Type Type
@@ -49,7 +51,7 @@ namespace GameClient.MVVM.Model.TileModels
         {
             return x >= XY_MIN_VALUE && y >= XY_MIN_VALUE;
         }
-        public Tile(int x, int y)
+        public Tile(int x, int y, bool placeable, bool destroyable)
         {
             if (!IsXYValid(x, y)) throw new Exception("Invalid xy initialization");
             this.x = x;
@@ -57,7 +59,14 @@ namespace GameClient.MVVM.Model.TileModels
             content = Type.EMPTY;
         }
         public Tile() { }
-        public static bool CompareXY(Tile a, Tile b)
+
+		public Tile(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+
+		public static bool CompareXY(Tile a, Tile b)
         {
             return a.x == b.x && a.y == b.y;
         }

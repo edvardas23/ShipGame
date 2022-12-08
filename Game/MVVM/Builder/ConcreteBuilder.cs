@@ -17,6 +17,7 @@ using GameClient.MVVM.Model.FacadeModels;
 using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
 using System.Windows;
+using GameClient.MVVM.Model.UnitModels.FlyWeight;
 
 namespace GameClient.MVVM.Builder
 {
@@ -30,9 +31,11 @@ namespace GameClient.MVVM.Builder
             this.Reset();
         }
 
-        public void BuildPartRockTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel)
+        public void BuildPartRockTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
         {
-            Tile tile = new Tile(x, y);
+			Tile temp_tile = new Tile(x, y, false, true);
+			var flyweight = factory.GetFlyweight(temp_tile);
+            Tile tile = flyweight.Operation(temp_tile, x, y);
             RockTile rockTile = new RockTile(tile);
             rockTile.Background = Brushes.Olive;
             rockTile.Name = identifier + x.ToString() + y.ToString();
@@ -51,9 +54,11 @@ namespace GameClient.MVVM.Builder
             this.map.Add(rockTile);
         }
 
-        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype)
+        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory)
         {
-            Tile tile = new Tile(x, y);
+			Tile temp_tile = new Tile(x, y, true, false);
+			var flyweight = factory.GetFlyweight(temp_tile);
+			Tile tile = flyweight.Operation(temp_tile, x, y);
             SeaTile seaTile = new SeaTile(tile);
             seaTile.Name = identifier + x.ToString() + y.ToString();
             seaTile.Width = width;
