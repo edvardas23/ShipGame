@@ -21,6 +21,7 @@ using GameClient.Net.Decorator;
 using System.Runtime.CompilerServices;
 using GameClient.MVVM.Bridge;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
+using GameClient.MVVM.Mediator;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -68,7 +69,7 @@ namespace GameClient.MVVM.ViewModel
             AttackTileCommand = new RelayCommand(o => _server.AttackEnemyTileToServer(TileName));
             UndoGameStartCommand = new RelayCommand(o => _server.UndoGameStartToServer());
         }
-        private void UserConnected()
+        public void UserConnected()
         {
             var user = new UserModel
             {
@@ -228,9 +229,17 @@ namespace GameClient.MVVM.ViewModel
 
         private void DrawUiForShips()
         {
-            AbstractFactory abstr = new AbstractListFactory();
-            List<Ship> listOfShips = abstr.GetShipsList();
-            for (int i = 0; i < listOfShips.Count(); i++)
+			Component1 component1 = new Component1();
+			Component2 component2 = new Component2();
+
+			//AbstractFactory abstr = component2.DoD();
+
+			// AbstractFactory abstr = new AbstractListFactory();
+			//  List<Ship> listOfShips = abstr.GetShipsList();
+
+			List<Ship> listOfShips = component2.DoD();
+
+			for (int i = 0; i < listOfShips.Count(); i++)
             {
                 Button btn = new Button();
 
@@ -409,7 +418,11 @@ namespace GameClient.MVVM.ViewModel
         }
         private void GenerateEmptyMap(string identifier)
         {
-            Random rnd = new Random();
+			Component1 component1 = new Component1();
+			Component2 component2 = new Component2();
+			new ConcreteMediator(component1, component2);
+
+			Random rnd = new Random();
 
             if (identifier == "m")
             { 
@@ -422,8 +435,8 @@ namespace GameClient.MVVM.ViewModel
                 int y = rnd.Next(0, 9);
                 prototype.array[i] = x.ToString() + y.ToString();
             }
-
-            Prototype clone = prototype.ShallowCopy();
+			Prototype clone = component1.DoA(prototype);
+           // Prototype clone = prototype.ShallowCopy();
 
 
 
