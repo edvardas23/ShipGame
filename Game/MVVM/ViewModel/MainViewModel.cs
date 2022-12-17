@@ -23,6 +23,7 @@ using GameClient.MVVM.Bridge;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
 using GameClient.MVVM.Mediator;
 using GameClient.MVVM.Visitor;
+using GameClient.MVVM.Chain;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -235,58 +236,76 @@ namespace GameClient.MVVM.ViewModel
 
 			//AbstractFactory abstr = component2.DoD();
 
-			 //AbstractFactory abstr = new AbstractListFactory();
+			//AbstractFactory abstr = new AbstractListFactory();
 			// List<Ship> listOfShips = abstr.GetShipsList();
 
+			var battleship = new BattleshipHandler();
+			var carrier = new CarrierHandler();
+			var destroyer = new DestroyerHandler();
+			var patrolboat = new PatrolBoatHandler();
+			var submarine = new SubmarineHandler();
+
+
 			List<Ship> listOfShips = component1.DoB();
+
+
+			Client clnt = new Client();
 
 			for (int i = 0; i < listOfShips.Count(); i++)
             {
                 Button btn = new Button();
 
+
                 if (listOfShips[i] is BattleshipModel)
                 {
+					battleship.SetNext(carrier);
                     currentShip = new BattleshipModel();
                     BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip);
-                    battleshipDestroyable.SetButtonBackground(btn);
-                    btn.Content = "Battleship";
-                    btn.Click += SetBattleship;
+                    battleshipDestroyable.SetButtonBackground(btn);	
+					btn.Content = clnt.ClientCode(battleship);
+					btn.Click += SetBattleship;
                     btn.Height = 25;
+
                 }
                 else if (listOfShips[i] is CarrierModel)
                 {
-                    currentShip = new CarrierModel();
+					carrier.SetNext(destroyer);
+					currentShip = new CarrierModel();
                     CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip);
                     carrierLoadable.SetButtonBackground(btn);
-                    btn.Content = "Carrier";
-                    btn.Click += SetCarrier;
+					btn.Content = clnt.ClientCode(carrier);
+					btn.Click += SetCarrier;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is DestroyerModel)
                 {
-                    currentShip = new DestroyerModel();
+
+					destroyer.SetNext(patrolboat);
+					currentShip = new DestroyerModel();
                     DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip);
                     destroyerDecorated.SetButtonBackground(btn);
-                    btn.Content = "Destroyer";
-                    btn.Click += SetDestroyer;
+                    btn.Content = clnt.ClientCode(destroyer);
+					btn.Click += SetDestroyer;
                     btn.Height = 25;
                 }
                 else if (listOfShips[i] is PatrolBoatModel)
                 {
-                    currentShip = new PatrolBoatModel();
+					patrolboat.SetNext(submarine);
+					currentShip = new PatrolBoatModel();
                     PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip);
                     patrolBoatArmed.SetButtonBackground(btn);
-                    btn.Content = "Patrol Boat";
-                    btn.Click += SetPatrolBoat;
+                    btn.Content = clnt.ClientCode(patrolboat);
+					btn.Click += SetPatrolBoat;
                     btn.Height = 25;
                 }
                 else
                 {
-                    currentShip = new SubmarineModel();
+					submarine.SetNext(battleship);
+					currentShip = new SubmarineModel();
                     SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip);
                     submarineDecorated.SetButtonBackground(btn);
-                    btn.Content = "Submarine";
-                    btn.Click += SetSubmarine;
+                    btn.Content = clnt.ClientCode(submarine);
+					btn.Click += SetSubmarine;
                     btn.Height = 25;
                 }
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
