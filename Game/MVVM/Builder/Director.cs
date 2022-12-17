@@ -57,10 +57,15 @@ namespace GameClient.MVVM.Builder
                 {
                     Random rnd = new Random();
                     int rand = rnd.Next(1, 50);;
-                    if (rand >= 48)
-                        this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
-                    else
-                        this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
+					if (rand >= 48)
+					{
+						if (identifier.Equals("m"))
+							this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+						else
+							this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
+					}
+					else
+						this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
                 }
             }
         }

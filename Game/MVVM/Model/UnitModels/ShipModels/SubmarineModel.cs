@@ -28,7 +28,13 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             this.isSubmerged = IsSubmerged;
         }
 
-        public SubmarineModel()
+		public SubmarineModel(Unit ship) : base(ship)
+		{
+			this.specialAbility = SpecialAbility;
+			this.isSubmerged = IsSubmerged;
+		}
+
+		public SubmarineModel()
         {
         }
 

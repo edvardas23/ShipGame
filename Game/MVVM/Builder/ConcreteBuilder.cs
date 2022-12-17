@@ -18,6 +18,7 @@ using static GameClient.MVVM.Model.FacadeModels.Facade;
 using GameClient.MVVM.Model.PrototypeModels;
 using System.Windows;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
+using GameClient.MVVM.Visitor;
 
 namespace GameClient.MVVM.Builder
 {
@@ -25,6 +26,12 @@ namespace GameClient.MVVM.Builder
     internal class ConcreteBuilder : IBuilder
     {
         private Map map = new Map();
+		List<Tile> tiles = new List<Tile>();
+
+		public List<Tile> GetTiles()
+		{
+			return tiles;
+		}
 
         public ConcreteBuilder()
         {
@@ -52,6 +59,9 @@ namespace GameClient.MVVM.Builder
             }
             newStackPanel.Children.Add(rockTile);
             this.map.Add(rockTile);
+			tiles.Add(rockTile);
+			//var visitor = new ConcreteVisitor();
+			//rockTile.Accept(visitor);
         }
 
         public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory)
@@ -80,7 +90,10 @@ namespace GameClient.MVVM.Builder
             }
             newStackPanel.Children.Add(seaTile);
             this.map.Add(seaTile);
-        }
+			tiles.Add(seaTile);
+			//var visitor = new ConcreteVisitor();
+			//seaTile.Accept(visitor);
+		}
 
         public void Reset()
         {

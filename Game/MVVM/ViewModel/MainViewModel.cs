@@ -22,6 +22,7 @@ using System.Runtime.CompilerServices;
 using GameClient.MVVM.Bridge;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
 using GameClient.MVVM.Mediator;
+using GameClient.MVVM.Visitor;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -371,7 +372,14 @@ namespace GameClient.MVVM.ViewModel
                         Ship ship2 = new CarrierModel(unit);
                         Ship ship3 = new DestroyerModel(unit);
                         Ship ship4 = new PatrolBoatModel(unit);
-                        ships.Add(ship);
+						Ship ship5 = new SubmarineModel(unit);
+						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu:";
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display();
+						ships.Add(ship);
                         ships.Add(ship2);
                         ships.Add(ship3);
                         ships.Add(ship4);
@@ -391,7 +399,24 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m");
-                        DrawUiForShips();
+						List<Ship> ships = new List<Ship>();
+						Unit unit = new Unit(new List<Tile>(3));
+						Ship ship = new BattleshipModel(unit);
+						Ship ship2 = new CarrierModel(unit);
+						Ship ship3 = new DestroyerModel(unit);
+						Ship ship4 = new PatrolBoatModel(unit);
+						Ship ship5 = new SubmarineModel(unit);
+						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu: \n";
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display();
+						ships.Add(ship);
+						ships.Add(ship2);
+						ships.Add(ship3);
+						ships.Add(ship4);
+						DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
                         GenerateEmptyMap("e");
@@ -405,7 +430,22 @@ namespace GameClient.MVVM.ViewModel
                         MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m");
-                        DrawUiForShips();
+						List<Ship> ships = new List<Ship>();
+						Unit unit = new Unit(new List<Tile>(3));
+						Ship ship = new BattleshipModel(unit);
+						Ship ship2 = new CarrierModel(unit);
+						Ship ship3 = new DestroyerModel(unit);
+						Ship ship4 = new PatrolBoatModel(unit);
+						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu: \n";
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
+						ships.Add(ship);
+						ships.Add(ship2);
+						ships.Add(ship3);
+						ships.Add(ship4);
+						DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
                         GenerateEmptyMap("e");
@@ -417,7 +457,7 @@ namespace GameClient.MVVM.ViewModel
             }
         }
         private void GenerateEmptyMap(string identifier)
-        {
+		{
 			Component1 component1 = new Component1();
 			Component2 component2 = new Component2();
 			new ConcreteMediator(component1, component2);
@@ -436,94 +476,49 @@ namespace GameClient.MVVM.ViewModel
                 prototype.array[i] = x.ToString() + y.ToString();
             }
 			Prototype clone = component1.DoA(prototype);
-           // Prototype clone = prototype.ShallowCopy();
-
-
 
             MainWindow.AppWindow.Dispatcher.Invoke(() =>
             {
                 if (identifier.Equals("m"))
                 {
-                    MainWindow.AppWindow.ShipCoord.Text += "Laivų koordinačiu kopijos padarytos su prototype patternu: \n";
+                    /*MainWindow.AppWindow.ShipCoord.Text += "Laivų koordinačiu kopijos padarytos su prototype patternu: \n";
                     for (int i = 0; i < 10; i++)
                     {
                         MainWindow.AppWindow.ShipCoord.Text += " " + clone.array[i];
-                    }
+                    }*/
                 }
                 Director director = new Director();
                 ConcreteBuilder builder = new ConcreteBuilder();
                 director.Builder = builder;
 				var factory = new FlyweightFactory();
                 director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory);
-               /* StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
-                double width = stackPanel.ActualWidth / Session.Instance.MapSize;
-                double height = stackPanel.ActualHeight / Session.Instance.MapSize;
-                for (int i = 0; i < Session.Instance.MapSize; i++)
-                {
-                    StackPanel newStackPanel = new StackPanel();
-                    newStackPanel.Name = identifier + "StackPanel" + i.ToString();
-                    newStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                    newStackPanel.Orientation = Orientation.Horizontal;
-                    stackPanel.Children.Add(newStackPanel);
-
-                    for (int j = 0; j < Session.Instance.MapSize; j++)
-                    {
-                        Random rnd = new Random();
-                        int rand = rnd.Next(1, 50); 
-                        if (rand >= 48)
-                        {
-                            Tile tile = new Tile(i, j);
-                            RockTile rockTile = new RockTile(tile);
-                            rockTile.Background = Brushes.Olive;
-                            rockTile.placeable = false;
-                            rockTile.Name = identifier + i.ToString() + j.ToString();
-                            rockTile.Width = width;
-                            rockTile.Height = height;
-
-
-
-                            if (identifier.Equals("e"))
-                            {
-                                rockTile.Command = AttackTileCommand;
-                                rockTile.Click += Button_Click;
-                            }
-
-                            System.Diagnostics.Debug.WriteLine(rockTile.Parent);
-                            newStackPanel.Children.Add(rockTile);
-                            TilesList.Add(rockTile);
-                        }
-                        else
-                        {
-                            Tile tile = new Tile(i, j);
-                            //tile.Content = identifier + i.ToString() + j.ToString();
-                            tile.Name = identifier + i.ToString() + j.ToString();
-                            tile.Width = width;
-                            tile.Height = height;
-
-                            if (identifier.Equals("e"))
-                            {
-                                tile.Command = AttackTileCommand;
-                                tile.Click += Button_Click;
-                            }
-                            else
-                            {
-                                for (int k = 0; k < 10; k++)
-                                {
-                                    if (i.ToString() + j.ToString() == prototype.array[k])
-                                    {
-                                        tile.Background = Brushes.Green;
-                                    }
-                                }
-                            }
-
-                            System.Diagnostics.Debug.WriteLine(tile.Parent);
-                            newStackPanel.Children.Add(tile);
-                            TilesList.Add(tile);
-
-                        }
-                    }
-                }*/
-            });
+				//For Visitor pattern implementation only
+				var visitor = new ConcreteVisitor();
+				List<Tile> tiles = builder.GetTiles();
+				bool printedSeaTile = false;
+				bool printedRockTile = false;
+				bool printedIslandTile = false;
+				foreach (var tile in tiles)
+				{
+					if (tile.Type is SeaTile && printedSeaTile == false)
+					{
+						SeaTile seatile = (SeaTile)tile;
+						seatile.Accept(visitor);
+						printedSeaTile = true;
+					} else if(tile.Type is RockTile && printedRockTile == false)
+					{
+						RockTile rockTile = (RockTile)tile;
+						rockTile.Accept(visitor);
+						printedRockTile = true;
+					}
+					else if (tile.Type is IslandTile && printedIslandTile == false)
+					{
+						IslandTile islandTile = (IslandTile)tile;
+						islandTile.Accept(visitor);
+						printedIslandTile = true;
+					}
+				}
+			});
         }   
         public bool CheckUsers()
         {

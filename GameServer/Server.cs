@@ -40,7 +40,7 @@ namespace GameSever
                     user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
                 }
             }
-            Console.WriteLine("TEST");
+            //Console.WriteLine("TEST");
         }
         public static void BroadcastMessage(string message)
         {
