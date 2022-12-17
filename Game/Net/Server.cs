@@ -5,6 +5,7 @@ using System.Windows;
 using GameClient.MVVM.Model.UnitModels.ShipModels;
 using GameClient.Net.Decorator;
 using PacketClass;
+using static GameClient.Net.Server;
 
 namespace GameClient.Net
 {
@@ -19,29 +20,36 @@ namespace GameClient.Net
         public event Action? startGameEvent; // Pradedamas žaidimas
         public event Action? attackEnemyTile;
         public event Action? undoGameStart;
+
+		private IProxyInterface proxy;
         public Server()
         {
-            _client = new TcpClient();
-        }
+			proxy = new ProxyService();
+		}
         public void ConnectToSever(string username)
         {
-            if (_client == null)
+            /*if (_client == null)
             {
                 _client = new TcpClient();
-            }
-            if (!_client.Connected)
-            {
-                _client.Connect("127.0.0.1", 6969);
-                PacketReader = new PacketReader_Adapter(_client.GetStream());
-                if (!string.IsNullOrEmpty(username))
-                {
-                    PacketBuilder connectPacket = new PacketBuilder_Adapter();
-                    connectPacket.WriteOpCode(0);
-                    connectPacket.WriteMessage(username);
-                    _client.Client.Send(connectPacket.GetPacketBytes());
-                }
-                ReadPackets();
-            }
+            }*/
+
+			//proxy = new ProxyService();
+			_client = proxy.ValidateConnection(username);
+
+			if (_client != null)
+			{
+				//_client.Connect("127.0.0.1", 6969);
+				PacketReader = new PacketReader_Adapter(_client.GetStream());
+				PacketBuilder connectPacket = new PacketBuilder_Adapter();
+				connectPacket.WriteOpCode(0);
+				connectPacket.WriteMessage(username);
+				_client.Client.Send(connectPacket.GetPacketBytes());
+				ReadPackets();
+			}
+			else 
+			{
+				return;
+			}
         }
         private void ReadPackets()
         {
