@@ -26,7 +26,7 @@ namespace GameClient.Net
 			List<string> ret = new List<string>
 			{
 				"edvardas",
-				"nojus"
+				"petras"
 			};
 			return ret;
 		}
