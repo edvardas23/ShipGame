@@ -28,7 +28,8 @@ namespace Game
 
         ShootStrategy shoot = new ShootStrategy();
         public static MainWindow AppWindow;
-        public MainWindow()
+		private CareTaker _caretaker = new CareTaker();
+		public MainWindow()
         {
             AppWindow = this;
             InitializeComponent();
@@ -85,5 +86,19 @@ namespace Game
             Session.Instance.GameModeType = 3;
         }
 
-    }
+		private void PauseButton_Click(object sender, RoutedEventArgs e)
+		{
+			_caretaker.Save(eStackPanel.Children);
+
+			foreach (UIElement element in eStackPanel.Children)
+			{
+				element.IsEnabled = false;
+			}
+		}
+
+		private void ResumeButton_Click(object sender, RoutedEventArgs e)
+		{
+			_caretaker.Restore(eStackPanel.Children);
+		}
+	}
 }

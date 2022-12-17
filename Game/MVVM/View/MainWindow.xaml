@@ -10,7 +10,7 @@
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
-    <Grid Name="Root">
+    <Grid Name="MyCanvas">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
@@ -38,11 +38,21 @@
                     IsEnabled="False"/>
             <Button Height="25"
                     DockPanel.Dock="Top"
+                    Name="PauseButton"
+                    Content="Sustabdyti žaidimą"
+                    IsEnabled="True" Click="PauseButton_Click"/>
+            <Button Height="25"
+                    DockPanel.Dock="Top"
+                    Name="ResumeButton"
+                    Content="Pratęsti žaidimą"
+                    IsEnabled="True" Click="ResumeButton_Click"/>
+            <Button Height="25"
+                    DockPanel.Dock="Top"
                     Name="UndoGameStartButton"
                     Content="Atšaukti žaidima"
                     Command="{Binding UndoGameStartCommand}"
                     Visibility="Collapsed"
-                    IsEnabled="False"/>
+                    IsEnabled="true"/>
 
 
             <ListView ItemsSource="{Binding Users}">
