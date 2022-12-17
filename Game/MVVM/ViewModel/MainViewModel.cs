@@ -234,10 +234,10 @@ namespace GameClient.MVVM.ViewModel
 
 			//AbstractFactory abstr = component2.DoD();
 
-			// AbstractFactory abstr = new AbstractListFactory();
-			//  List<Ship> listOfShips = abstr.GetShipsList();
+			 //AbstractFactory abstr = new AbstractListFactory();
+			// List<Ship> listOfShips = abstr.GetShipsList();
 
-			List<Ship> listOfShips = component2.DoD();
+			List<Ship> listOfShips = component1.DoB();
 
 			for (int i = 0; i < listOfShips.Count(); i++)
             {

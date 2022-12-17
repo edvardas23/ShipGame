@@ -15,6 +15,8 @@ namespace GameClient.MVVM.Mediator
 	public interface IMediator
 	{
 		void Notify(object sender, string ev);
+
+		void Notify(object sender, string ev, List<Ship> ships);
 	}
 
 	// Concrete Mediators implement cooperative behavior by coordinating several
@@ -43,6 +45,14 @@ namespace GameClient.MVVM.Mediator
 			{
 				this._component2.DoC();
 			}
+			if (ev == "B")
+			{
+				this._component2.DoD();
+			}
+
+		}
+		public void Notify(object sender, string ev, List<Ship> ships)
+		{
 
 		}
 	}
@@ -77,9 +87,16 @@ namespace GameClient.MVVM.Mediator
 			
 		}
 
-		public void DoB()
+		public List<Ship> DoB()
 		{
+			AbstractFactory abstr = new AbstractListFactory();
+			List<Ship> ships = abstr.GetShipsList();
+			if( ships != null)
+			{
+				return ships;
+			}
 			this._mediator.Notify(this, "B");
+			return null;
 		}
 	}
 
@@ -91,12 +108,10 @@ namespace GameClient.MVVM.Mediator
 			this._mediator.Notify(this, "C");
 		}
 
-		public List<Ship> DoD()
+		public void DoD()
 		{
-			AbstractFactory abstr = new AbstractListFactory();
-			List<Ship> ships = abstr.GetShipsList();
-			this._mediator.Notify(this, "D");
-			return ships;
+			throw new InvalidOperationException("Failed to get ship list" );
+			//this._mediator.Notify(this, "D");
 		}
 	}
 }
