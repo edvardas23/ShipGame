@@ -66,7 +66,7 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             }
             else
             {
-                submerged = "submerged";
+                submerged = " not submerged";
             }
             string msg = name + " has been sunk while it was " + submerged;
             return msg;
