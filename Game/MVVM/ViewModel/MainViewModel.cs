@@ -258,56 +258,54 @@ namespace GameClient.MVVM.ViewModel
 
                 if (listOfShips[i] is BattleshipModel)
                 {
-					battleship.SetNext(carrier);
                     currentShip = new BattleshipModel();
                     BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip);
                     battleshipDestroyable.SetButtonBackground(btn);	
 					btn.Content = clnt.ClientCode(battleship);
 					btn.Click += SetBattleship;
                     btn.Height = 25;
-
-                }
+					battleship.SetNext(carrier);
+				}
                 else if (listOfShips[i] is CarrierModel)
                 {
-					carrier.SetNext(destroyer);
 					currentShip = new CarrierModel();
                     CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip);
                     carrierLoadable.SetButtonBackground(btn);
 					btn.Content = clnt.ClientCode(carrier);
 					btn.Click += SetCarrier;
                     btn.Height = 25;
-                }
+					carrier.SetNext(destroyer);
+				}
                 else if (listOfShips[i] is DestroyerModel)
                 {
-
-					destroyer.SetNext(patrolboat);
 					currentShip = new DestroyerModel();
                     DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip);
                     destroyerDecorated.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(destroyer);
 					btn.Click += SetDestroyer;
                     btn.Height = 25;
-                }
+					destroyer.SetNext(patrolboat);
+				}
                 else if (listOfShips[i] is PatrolBoatModel)
                 {
-					patrolboat.SetNext(submarine);
 					currentShip = new PatrolBoatModel();
                     PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip);
                     patrolBoatArmed.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(patrolboat);
 					btn.Click += SetPatrolBoat;
                     btn.Height = 25;
-                }
+					patrolboat.SetNext(submarine);
+				}
                 else
                 {
-					submarine.SetNext(battleship);
 					currentShip = new SubmarineModel();
                     SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip);
                     submarineDecorated.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(submarine);
 					btn.Click += SetSubmarine;
                     btn.Height = 25;
-                }
+					submarine.SetNext(battleship);
+				}
                 MainWindow.AppWindow.shipsPanel.Children.Add(btn);
             }
         }
@@ -384,7 +382,7 @@ namespace GameClient.MVVM.ViewModel
 
 
                         Session.Instance.MapSize = 10;
-                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("m", Session.Instance.GameModeType);
                         List<Ship> ships = new List<Ship>();
                         Unit unit = new Unit(new List<Tile>(3));
                         Ship ship = new BattleshipModel(unit);
@@ -405,9 +403,7 @@ namespace GameClient.MVVM.ViewModel
                         DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
-                        //PlaceShips(ships);
-                        //Ship ship = new Ship();
-                        GenerateEmptyMap("e");
+                        GenerateEmptyMap("e", Session.Instance.GameModeType);
                     });
                     break;
                 case 2:
@@ -417,7 +413,7 @@ namespace GameClient.MVVM.ViewModel
 
                         MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 15;
-                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("m", Session.Instance.GameModeType);
 						List<Ship> ships = new List<Ship>();
 						Unit unit = new Unit(new List<Tile>(3));
 						Ship ship = new BattleshipModel(unit);
@@ -438,7 +434,7 @@ namespace GameClient.MVVM.ViewModel
 						DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
-                        GenerateEmptyMap("e");
+                        GenerateEmptyMap("e", Session.Instance.GameModeType);
                     });
                     break;
                 case 3:
@@ -448,7 +444,7 @@ namespace GameClient.MVVM.ViewModel
 
                         MainWindow.AppWindow.currentMode.Text = sub.ModeName();
                         Session.Instance.MapSize = 20;
-                        GenerateEmptyMap("m");
+                        GenerateEmptyMap("m", Session.Instance.GameModeType);
 						List<Ship> ships = new List<Ship>();
 						Unit unit = new Unit(new List<Tile>(3));
 						Ship ship = new BattleshipModel(unit);
@@ -467,7 +463,7 @@ namespace GameClient.MVVM.ViewModel
 						DrawUiForShips();
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
-                        GenerateEmptyMap("e");
+                        GenerateEmptyMap("e", Session.Instance.GameModeType);
                     });
                     break;
                 default:
@@ -475,7 +471,7 @@ namespace GameClient.MVVM.ViewModel
                     break;
             }
         }
-        private void GenerateEmptyMap(string identifier)
+        private void GenerateEmptyMap(string identifier, int gameType)
 		{
 			Component1 component1 = new Component1();
 			Component2 component2 = new Component2();
@@ -510,7 +506,7 @@ namespace GameClient.MVVM.ViewModel
                 ConcreteBuilder builder = new ConcreteBuilder();
                 director.Builder = builder;
 				var factory = new FlyweightFactory();
-                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory);
+                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory, gameType);
 				//For Visitor pattern implementation only
 				var visitor = new ConcreteVisitor();
 				List<Tile> tiles = builder.GetTiles();

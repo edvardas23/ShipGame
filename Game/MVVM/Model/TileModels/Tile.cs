@@ -16,8 +16,8 @@ namespace GameClient.MVVM.Model.TileModels
         SHIP,
         EMPTY
     }
-    public class Tile : Button //Abstraction
-    {
+	public class Tile : Button //Abstraction
+	{
         private TileImplementor implementor;
 
         //public const int XY_MAX_VALUE = 10;

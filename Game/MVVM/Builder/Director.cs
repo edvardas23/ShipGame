@@ -41,12 +41,14 @@ namespace GameClient.MVVM.Builder
             }
         }
 
-        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand, Prototype prototype, FlyweightFactory factory)
+        public void BuildFullFeaturedMap(int x, int y, string identifier, RelayCommand AttackTileCommand, Prototype prototype, FlyweightFactory factory, int gameType)
         {
+			List<string> coordinates = new List<string>();
+			string cood1 = "", cood2 = "", cood3 = "", cood4 = "", cood5 = "";
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width = stackPanel.ActualWidth / Session.Instance.MapSize;
             double height = stackPanel.ActualHeight / Session.Instance.MapSize;
-            for (int i = 0; i < x; i++)
+			for (int i = 0; i < x; i++)
             {
                 StackPanel newStackPanel = new StackPanel();
                 newStackPanel.Name = identifier + "StackPanel" + i.ToString();
@@ -55,12 +57,22 @@ namespace GameClient.MVVM.Builder
                 stackPanel.Children.Add(newStackPanel);
                 for (int j = 0; j < y; j++)
                 {
-                    Random rnd = new Random();
-                    int rand = rnd.Next(1, 50);;
+					Random rnd = new Random();
+                    int rand = rnd.Next(1, 50);
 					if (rand >= 48)
 					{
 						if (identifier.Equals("m"))
-							this.builder.BuildPartRockTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+						{
+							cood1 += this.builder.BuildBattleShipTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+							cood2 += this.builder.BuildCarrierTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+							cood3 += this.builder.BuildDestroyerTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+							cood4 += this.builder.BuildPatrolBoatTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+
+							if (gameType == 2 || gameType == 3)
+							{
+								cood5 += this.builder.BuildSubmarineTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, factory);
+							}
+						}
 						else
 							this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
 					}
@@ -68,6 +80,7 @@ namespace GameClient.MVVM.Builder
 						this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
                 }
             }
-        }
+			MessageBox.Show("cood1: " + cood1 + "\n" + "cood2: " + cood2 + "\n" + cood3 + "cood3: " + "\n" + "cood4: " + cood4 + "\n" + "cood5: " + cood5 + "\n");
+		}
 	}
 }

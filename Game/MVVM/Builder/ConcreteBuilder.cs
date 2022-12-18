@@ -72,7 +72,7 @@ namespace GameClient.MVVM.Builder
             SeaTile seaTile = new SeaTile(tile);
             seaTile.Name = identifier + x.ToString() + y.ToString();
             seaTile.Width = width;
-            seaTile.Height = height; 
+            seaTile.Height = height;
             if (identifier.Equals("e"))
             {
                 seaTile.Command = AttackTileCommand;
@@ -95,7 +95,372 @@ namespace GameClient.MVVM.Builder
 			//seaTile.Accept(visitor);
 		}
 
-        public void Reset()
+		public string BuildBattleShipTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+		{
+			string coordinates = "";
+			Tile temp_tile = new Tile(x, y, false, true);
+			var flyweight = factory.GetFlyweight(temp_tile);
+			Tile tile = flyweight.Operation(temp_tile, x, y);
+			coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+			tile.Background = Brushes.Moccasin;
+			tile.Name = identifier + x.ToString() + y.ToString();
+			tile.Width = width;
+			tile.Height = height;
+			if (identifier.Equals("e"))
+			{
+				tile.Command = AttackTileCommand;
+				tile.Click += MainViewModel.Button_Click;
+			}
+			else
+			{
+
+			}
+			newStackPanel.Children.Add(tile);
+			this.map.Add(tile);
+			tiles.Add(tile);
+
+			return coordinates;
+		}
+		public string BuildCarrierTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+		{
+			string coordinates = "";
+			//for (int i = 0; i < 2; i++)
+			//{
+				Tile temp_tile = new Tile(x, y, false, true);
+				var flyweight = factory.GetFlyweight(temp_tile);
+				//if (i == 0)
+				//{
+					Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.LightGreen;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 1)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X + 1, temp_tile.Y);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					/*tile.Background = Brushes.LightGreen;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+			//}*/
+			return coordinates;
+		}
+		public string BuildDestroyerTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+		{
+			string coordinates = "";
+			//for (int i = 0; i < 3; i++)
+			//{
+				//if (i == 0)
+				//{
+					Tile temp_tile = new Tile(x, y, false, true);
+					var flyweight = factory.GetFlyweight(temp_tile);
+					Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.CadetBlue;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 1)
+				//{
+					//Tile temp_tile = new Tile(x, y + 1, false, true);
+					//var flyweight = factory.GetFlyweight(temp_tile);
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					/*tile.Background = Brushes.CadetBlue;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 2)
+				//{
+					//Tile temp_tile = new Tile(x + 1, y, false, true);
+					//var flyweight = factory.GetFlyweight(temp_tile);
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.CadetBlue;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+			//}*/
+			return coordinates;
+		}
+		public string BuildPatrolBoatTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+		{
+			string coordinates = "";
+			//for (int i = 0; i < 4; i++)
+			//{
+				Tile temp_tile = new Tile(x, y, false, true);
+				var flyweight = factory.GetFlyweight(temp_tile);
+			//	if (i == 0)
+			//	{
+					Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.DarkOrange;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 1)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X + 1, temp_tile.Y);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					/*tile.Background = Brushes.DarkOrange;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 2)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y + 1);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.DarkOrange;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 3)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y + 2);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.DarkOrange;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+			//}*/
+			return coordinates;
+		}
+		public string BuildSubmarineTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+		{
+			string coordinates = "";
+			//for (int i = 0; i < 5; i++)
+			//{
+				Tile temp_tile = new Tile(x, y, false, true);
+				var flyweight = factory.GetFlyweight(temp_tile);
+				//if (i == 0)
+				//{
+					Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y);
+					coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.Aquamarine;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 1)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X + 1, temp_tile.Y);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					/*tile.Background = Brushes.Aquamarine;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 2)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y + 1);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.Aquamarine;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 3)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X, temp_tile.Y + 2);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.Aquamarine;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+				//if (i == 4)
+				//{
+					//Tile tile = flyweight.Operation(temp_tile, temp_tile.X + 1, temp_tile.Y + 2);
+					//coordinates += tile.X.ToString() + ";" + tile.Y.ToString() + " ";
+					tile.Background = Brushes.Aquamarine;
+					tile.Name = identifier + x.ToString() + y.ToString();
+					tile.Width = width;
+					tile.Height = height;
+					if (identifier.Equals("e"))
+					{
+						tile.Command = AttackTileCommand;
+						tile.Click += MainViewModel.Button_Click;
+					}
+					else
+					{
+
+					}
+					newStackPanel.Children.Add(tile);
+					this.map.Add(tile);
+					tiles.Add(tile);
+				//}
+			//}*/
+			return coordinates;
+		}
+
+		public void Reset()
         {
             this.map = new Map();
         }

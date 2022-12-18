@@ -18,7 +18,7 @@ namespace GameClient.Net
 			}
 			else
 			{
-				MessageBox.Show("Jūsų nauduotojo vardas per trumpas!\n Minimalus simbolių kiekis 4!");
+				MessageBox.Show("Jūsų naudotojo vardas per trumpas!\n Minimalus simbolių kiekis 4!");
 				return false;
 			}
 		}
