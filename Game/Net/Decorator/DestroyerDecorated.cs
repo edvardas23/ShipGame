@@ -13,7 +13,7 @@ namespace GameClient.Net.Decorator
     public class DestroyerDecorated : Decorator
     {
         protected readonly List<string> bombs = new List<string>();
-        public DestroyerDecorated(Ship ship) : base(ship) { }
+        public DestroyerDecorated(Ship ship, string name) : base(ship, name) { }
         public void AddBomb(string name)
         {
             bombs.Add(name);

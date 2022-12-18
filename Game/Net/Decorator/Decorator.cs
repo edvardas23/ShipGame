@@ -11,7 +11,7 @@ namespace GameClient.Net.Decorator
     public abstract class Decorator : Ship
     {
         protected Ship ship;
-        public Decorator(Ship ship)
+        public Decorator(Ship ship, string name) : base(name)
         {
             this.ship = ship;
         }

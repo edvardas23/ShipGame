@@ -24,6 +24,7 @@ using GameClient.MVVM.Model.UnitModels.FlyWeight;
 using GameClient.MVVM.Mediator;
 using GameClient.MVVM.Visitor;
 using GameClient.MVVM.Chain;
+using GameClient.MVVM.CompositePattern;
 
 namespace GameClient.MVVM.ViewModel
 {
@@ -177,31 +178,31 @@ namespace GameClient.MVVM.ViewModel
             switch (type)
             {
                 case 1:
-                    currentShip = new BattleshipModel();
+                    currentShip = new BattleshipModel("Battleship");
                     WantsToAddShip = true;
                     placeTile = false;
                     Color = Brushes.Moccasin;
                     break;
                 case 2:
-                    currentShip = new CarrierModel();
+                    currentShip = new CarrierModel("Carrier");
                     WantsToAddShip = true;
                     placeTile = false;
                     Color = Brushes.LightGreen;
                     break;
                 case 3:
-                    currentShip = new DestroyerModel();
+                    currentShip = new DestroyerModel("Destroyer");
                     WantsToAddShip = true;
                     placeTile = false;
                     Color = Brushes.CadetBlue;
                     break;
                 case 4:
-                    currentShip = new PatrolBoatModel();
+                    currentShip = new PatrolBoatModel("Patrol boat");
                     WantsToAddShip = true;
                     placeTile = false;
                     Color = Brushes.DarkOrange;
                     break;
                 case 5:
-                    currentShip = new SubmarineModel();
+                    currentShip = new SubmarineModel("Submarine");
                     WantsToAddShip = true;
                     placeTile = false;
                     Color = Brushes.Aquamarine;
@@ -258,8 +259,8 @@ namespace GameClient.MVVM.ViewModel
 
                 if (listOfShips[i] is BattleshipModel)
                 {
-                    currentShip = new BattleshipModel();
-                    BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip);
+                    currentShip = new BattleshipModel("Battleship");
+                    BattleshipDestroyable battleshipDestroyable = new BattleshipDestroyable(currentShip, "Battleship");
                     battleshipDestroyable.SetButtonBackground(btn);	
 					btn.Content = clnt.ClientCode(battleship);
 					btn.Click += SetBattleship;
@@ -268,8 +269,8 @@ namespace GameClient.MVVM.ViewModel
 				}
                 else if (listOfShips[i] is CarrierModel)
                 {
-					currentShip = new CarrierModel();
-                    CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip);
+					currentShip = new CarrierModel("Carrier");
+                    CarrierLoadable carrierLoadable = new CarrierLoadable(currentShip, "Carrier");
                     carrierLoadable.SetButtonBackground(btn);
 					btn.Content = clnt.ClientCode(carrier);
 					btn.Click += SetCarrier;
@@ -278,8 +279,8 @@ namespace GameClient.MVVM.ViewModel
 				}
                 else if (listOfShips[i] is DestroyerModel)
                 {
-					currentShip = new DestroyerModel();
-                    DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip);
+					currentShip = new DestroyerModel("Destroyer");
+                    DestroyerDecorated destroyerDecorated = new DestroyerDecorated(currentShip, "Destroyer");
                     destroyerDecorated.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(destroyer);
 					btn.Click += SetDestroyer;
@@ -288,8 +289,8 @@ namespace GameClient.MVVM.ViewModel
 				}
                 else if (listOfShips[i] is PatrolBoatModel)
                 {
-					currentShip = new PatrolBoatModel();
-                    PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip);
+					currentShip = new PatrolBoatModel("Patrol boat");
+                    PatrolBoatArmed patrolBoatArmed = new PatrolBoatArmed(currentShip, "Patrol boat");
                     patrolBoatArmed.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(patrolboat);
 					btn.Click += SetPatrolBoat;
@@ -298,8 +299,8 @@ namespace GameClient.MVVM.ViewModel
 				}
                 else
                 {
-					currentShip = new SubmarineModel();
-                    SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip);
+					currentShip = new SubmarineModel("Submarine");
+                    SubmarineDecorated submarineDecorated = new SubmarineDecorated(currentShip, "Submarine");
                     submarineDecorated.SetButtonBackground(btn);
                     btn.Content = clnt.ClientCode(submarine);
 					btn.Click += SetSubmarine;
@@ -371,7 +372,7 @@ namespace GameClient.MVVM.ViewModel
             StartGameButtonVisibilty(false);
             UndoButtonVisibilty(true);
 
-            switch (Session.Instance.GameModeType)
+			switch (Session.Instance.GameModeType)
             {
                 case 1:
                     Application.Current.Dispatcher.Invoke(() =>
@@ -384,18 +385,18 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 10;
                         GenerateEmptyMap("m", Session.Instance.GameModeType);
                         List<Ship> ships = new List<Ship>();
-                        Unit unit = new Unit(new List<Tile>(3));
-                        Ship ship = new BattleshipModel(unit);
-                        Ship ship2 = new CarrierModel(unit);
-                        Ship ship3 = new DestroyerModel(unit);
-                        Ship ship4 = new PatrolBoatModel(unit);
-						Ship ship5 = new SubmarineModel(unit);
+                        Unit unit = new Unit(new List<Tile>(3), "");
+                        Ship ship = new BattleshipModel(unit, "Battleship");
+                        Ship ship2 = new CarrierModel(unit, "Carrier");
+                        Ship ship3 = new DestroyerModel(unit, "Destroyer");
+                        Ship ship4 = new PatrolBoatModel(unit, "Patrol boat");
+						Ship ship5 = new SubmarineModel(unit, "Submarine");
 						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu:";
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
-						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display() + " \n";
 						ships.Add(ship);
                         ships.Add(ship2);
                         ships.Add(ship3);
@@ -404,7 +405,20 @@ namespace GameClient.MVVM.ViewModel
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
                         GenerateEmptyMap("e", Session.Instance.GameModeType);
-                    });
+
+						//Composite
+						Composite tree = new Composite("Tree");
+						Composite branch1 = new Composite("1 Branch");
+						branch1.Add(ship);
+						branch1.Add(ship2);
+						branch1.Add(ship3);
+						Composite branch2 = new Composite("2 Branch");
+						branch2.Add(ship4);
+						tree.Add(branch1);
+						tree.Add(branch2);
+						MainWindow.AppWindow.Composite.Text += "Composite sablono realizacija: \n";
+						MainWindow.AppWindow.Composite.Text += tree.DisplayResult(1);
+					});
                     break;
                 case 2:
                     Application.Current.Dispatcher.Invoke(() =>
@@ -415,18 +429,18 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 15;
                         GenerateEmptyMap("m", Session.Instance.GameModeType);
 						List<Ship> ships = new List<Ship>();
-						Unit unit = new Unit(new List<Tile>(3));
-						Ship ship = new BattleshipModel(unit);
-						Ship ship2 = new CarrierModel(unit);
-						Ship ship3 = new DestroyerModel(unit);
-						Ship ship4 = new PatrolBoatModel(unit);
-						Ship ship5 = new SubmarineModel(unit);
+						Unit unit = new Unit(new List<Tile>(3), "");
+						Ship ship = new BattleshipModel(unit, "Battleship");
+						Ship ship2 = new CarrierModel(unit, "Carrier");
+						Ship ship3 = new DestroyerModel(unit, "Destroyer");
+						Ship ship4 = new PatrolBoatModel(unit, "Patrol boat");
+						Ship ship5 = new SubmarineModel(unit, "Submarine");
 						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu: \n";
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
-						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship5.Display() + " \n";
 						ships.Add(ship);
 						ships.Add(ship2);
 						ships.Add(ship3);
@@ -435,7 +449,20 @@ namespace GameClient.MVVM.ViewModel
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
                         GenerateEmptyMap("e", Session.Instance.GameModeType);
-                    });
+
+						//Composite
+						Composite tree = new Composite("Tree");
+						Composite branch1 = new Composite("1 Branch");
+						branch1.Add(ship);
+						branch1.Add(ship2);
+						branch1.Add(ship3);
+						Composite branch2 = new Composite("2 Branch");
+						branch2.Add(ship4);
+						tree.Add(branch1);
+						tree.Add(branch2);
+						MainWindow.AppWindow.Composite.Text += "Composite sablono realizacija: \n";
+						MainWindow.AppWindow.Composite.Text += tree.DisplayResult(1);
+					});
                     break;
                 case 3:
                     Application.Current.Dispatcher.Invoke(() =>
@@ -446,16 +473,17 @@ namespace GameClient.MVVM.ViewModel
                         Session.Instance.MapSize = 20;
                         GenerateEmptyMap("m", Session.Instance.GameModeType);
 						List<Ship> ships = new List<Ship>();
-						Unit unit = new Unit(new List<Tile>(3));
-						Ship ship = new BattleshipModel(unit);
-						Ship ship2 = new CarrierModel(unit);
-						Ship ship3 = new DestroyerModel(unit);
-						Ship ship4 = new PatrolBoatModel(unit);
+						Unit unit = new Unit(new List<Tile>(3), "");
+						Ship ship = new BattleshipModel(unit, "Battleship");
+						Ship ship2 = new CarrierModel(unit, "Carrier");
+						Ship ship3 = new DestroyerModel(unit, "Destroyer");
+						Ship ship4 = new PatrolBoatModel(unit, "Patrol boat");
+						Ship ship5 = new SubmarineModel(unit, "Submarine");
 						MainWindow.AppWindow.ShipCoord.Text += "Laivai atvaizduoti su Template method sablonu: \n";
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship2.Display();
 						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship3.Display();
-						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display();
+						MainWindow.AppWindow.ShipCoord.Text += " \n" + ship4.Display() + " \n";
 						ships.Add(ship);
 						ships.Add(ship2);
 						ships.Add(ship3);
@@ -464,7 +492,20 @@ namespace GameClient.MVVM.ViewModel
                         AddButtonForPlacingRocks();
                         AddButtonForPlacingIslands();
                         GenerateEmptyMap("e", Session.Instance.GameModeType);
-                    });
+
+						//Composite
+						Composite tree = new Composite("Tree");
+						Composite branch1 = new Composite("1 Branch");
+						branch1.Add(ship);
+						branch1.Add(ship2);
+						branch1.Add(ship3);
+						Composite branch2 = new Composite("2 Branch");
+						branch2.Add(ship4);
+						tree.Add(branch1);
+						tree.Add(branch2);
+						MainWindow.AppWindow.Composite.Text += "Composite sablono realizacija: \n";
+						MainWindow.AppWindow.Composite.Text += tree.DisplayResult(1);
+					});
                     break;
                 default:
                     MessageBox.Show("Neveikia :)");

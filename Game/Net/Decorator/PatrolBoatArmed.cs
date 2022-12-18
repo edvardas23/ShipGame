@@ -14,7 +14,7 @@ namespace GameClient.Net.Decorator
     public class PatrolBoatArmed : Decorator
     {
         protected readonly List<string> weapons = new List<string>();
-        public PatrolBoatArmed(Ship ship) : base(ship) { }
+        public PatrolBoatArmed(Ship ship, string name) : base(ship, name) { }
         public void AddWeapon(string name)
         {
             weapons.Add(name);

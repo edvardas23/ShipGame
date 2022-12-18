@@ -15,7 +15,7 @@ namespace GameClient.Net.Decorator
     {
         protected readonly List<string> rockets = new List<string>();
 
-        public BattleshipDestroyable(Ship ship) : base(ship) { }
+        public BattleshipDestroyable(Ship ship, string name) : base(ship, name) { }
         public void AddRocket(string rocketName)
         {
             rockets.Add(rocketName);

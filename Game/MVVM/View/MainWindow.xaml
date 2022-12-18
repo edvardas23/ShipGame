@@ -138,7 +138,9 @@
         <Button Grid.Column="4" Grid.Row="1" Name="Klasikinis" Content="Klasikinis šuvis - 1 žala"  HorizontalAlignment="Left" Margin="12,5,0,0" VerticalAlignment="Top" Click="Damage_1" Width="122"/>
         <Button Grid.Column="4" Grid.Row="1" Name="Fugasinis" Content="Fugasinis šuvis - 4 žala" HorizontalAlignment="Right" Margin="-20,5,20,0" Click="Damage_4" VerticalAlignment="Top"/>
         <TextBlock Grid.Column="4" Grid.Row="1" Name="currentDmg"  HorizontalAlignment="Left" Height="14" Margin="12,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Grid.Column="3" Grid.Row="1" Name="currentMode"  HorizontalAlignment="Right" Height="31" Margin="0,30,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Grid.Column="4" Grid.Row="1" Name="ShipCoord" HorizontalAlignment="Center" Margin="0,38,0,10" TextWrapping="Wrap" Text="" Width="401"/>
+        <TextBlock Name="currentMode"  HorizontalAlignment="Right" Height="31" Margin="0,266,70,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.RowSpan="2"/>
+        <TextBlock Grid.Column="3" Grid.Row="1" Name="ShipCoord" HorizontalAlignment="Left" Margin="10,42,0,6" TextWrapping="Wrap" Text="" Width="200" RenderTransformOrigin="0.5,0.5" />
+        <TextBlock Grid.Column="3" HorizontalAlignment="Left" Name="Composite"  Margin="234,42,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="153" Width="186"/>
+
     </Grid>
 </Window>

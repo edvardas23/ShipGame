@@ -23,12 +23,12 @@ namespace GameClient.MVVM.Model.UnitModels
             get { return hp; }
         }
 
-        public Ship(Unit unit) : base(unit.Tiles)
+        public Ship(Unit unit, string name) : base(unit.Tiles, name)
         {
             size = unit.Tiles.Count;
             hp = unit.Tiles.Count;
         }
-        public Ship() { }
+        public Ship(string name) : base(name) { }
         public void TakeDamage()
         {
             if (hp > 0) hp--;
@@ -52,7 +52,6 @@ namespace GameClient.MVVM.Model.UnitModels
             }
             return msg;
         }
-
-        public abstract string DisplaySunk();
+		public abstract string DisplaySunk();
     }
 }

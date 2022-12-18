@@ -13,27 +13,27 @@ namespace GameClient.MVVM.ViewModel
 
         public override Ship CreateBattleship()
         {
-            BattleshipModel model = new BattleshipModel();
+            BattleshipModel model = new BattleshipModel("Battleship");
             return model;
         }
         public override Ship CreateCarrier()
         {
-            CarrierModel model = new CarrierModel();
+            CarrierModel model = new CarrierModel("Carrier");
             return model;
         }
         public override Ship CreateDestroyer()
         {
-            DestroyerModel model = new DestroyerModel();
+            DestroyerModel model = new DestroyerModel("Destroyer");
             return model;
         }
         public override Ship CreatePatrol()
         {
-            PatrolBoatModel model = new PatrolBoatModel();
+            PatrolBoatModel model = new PatrolBoatModel("Patrol boat");
             return model;
         }
         public override Ship CreateSubmarine()
         {
-            SubmarineModel model = new SubmarineModel();
+            SubmarineModel model = new SubmarineModel("Submarine");
             return model;
         }
     }

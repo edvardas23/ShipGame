@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace GameClient.Net.Decorator
 {
     public class SubmarineDecorated : Decorator
     {
         protected readonly List<string> armors = new List<string>();
-        public SubmarineDecorated(Ship ship) : base(ship) { }
+        public SubmarineDecorated(Ship ship, string name) : base(ship, name) { }
         public void AddArmor(string name)
         {
             armors.Add(name);

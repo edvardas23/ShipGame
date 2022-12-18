@@ -13,7 +13,7 @@ namespace GameClient.Net.Decorator
     public class CarrierLoadable : Decorator
     {
         protected readonly List<string> planes = new List<string>();
-        public CarrierLoadable(Ship ship) : base(ship) { }
+        public CarrierLoadable(Ship ship, string name) : base(ship, name) { }
         public void AddPlane(string name)
         {
             planes.Add(name);

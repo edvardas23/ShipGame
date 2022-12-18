@@ -16,17 +16,17 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             get { return specialAbility; }
         }
 
-        public DestroyerModel(Ship ship) : base(ship)
-        {
+        public DestroyerModel(Ship ship, string name) : base(name)
+		{
             this.specialAbility = SpecialAbility;
 		}
-		public DestroyerModel(Unit ship) : base(ship)
+		public DestroyerModel(Unit ship, string name) : base(name)
 		{
 			this.specialAbility = SpecialAbility;
 		}
 
-		public DestroyerModel() : base()
-        {
+		public DestroyerModel(string name) : base(name)
+		{
         }
 
         public void UseSpecialAbility()
@@ -45,5 +45,9 @@ namespace GameClient.MVVM.Model.UnitModels.ShipModels
             string msg = name + " has been sunk";
             return msg;
         }
-    }
+		public override string DisplayResult(int indent)
+		{
+			return (new String('-', indent) + this.GetType().Name);
+		}
+	}
 }

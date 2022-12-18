@@ -83,7 +83,6 @@ namespace GameClient.MVVM.Builder
 						this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory, visitor);
                 }
             }
-			MessageBox.Show("cood1: " + cood1 + "\n" + "cood2: " + cood2 + "\n" + cood3 + "cood3: " + "\n" + "cood4: " + cood4 + "\n" + "cood5: " + cood5 + "\n");
 		}
 	}
 }

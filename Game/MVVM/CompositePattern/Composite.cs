@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 
-namespace GameClient.MVVM.Composite
+namespace GameClient.MVVM.CompositePattern
 {
 	public class Composite : Component
 	{
 		protected List<Component> _children = new List<Component>();
+		public Composite(string name) : base(name) { }
 
 		public void Add(Component component)
 		{
@@ -20,22 +22,17 @@ namespace GameClient.MVVM.Composite
 		{
 			this._children.Remove(component);
 		}
-		public override string Display()
+		public override string DisplayResult(int indent)
 		{
-			int i = 0;
-			string result = "Branch(";
+			string result = "";
+			result += new String('-', indent) + " + " + name + " \n";
 
 			foreach (Component component in this._children)
 			{
-				result += component.Display();
-				if (i != this._children.Count - 1)
-				{
-					result += "+";
-				}
-				i++;
+				result += component.DisplayResult(indent + 2) + " \n";
 			}
 
-			return result + ")";
+			return result;
 		}
 	}
 }
