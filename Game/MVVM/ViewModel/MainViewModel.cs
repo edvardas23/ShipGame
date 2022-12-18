@@ -511,32 +511,6 @@ namespace GameClient.MVVM.ViewModel
                 director.Builder = builder;
 				var factory = new FlyweightFactory();
                 director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory);
-				//For Visitor pattern implementation only
-				var visitor = new ConcreteVisitor();
-				List<Tile> tiles = builder.GetTiles();
-				bool printedSeaTile = false;
-				bool printedRockTile = false;
-				bool printedIslandTile = false;
-				foreach (var tile in tiles)
-				{
-					if (tile.Type is SeaTile && printedSeaTile == false)
-					{
-						SeaTile seatile = (SeaTile)tile;
-						seatile.Accept(visitor);
-						printedSeaTile = true;
-					} else if(tile.Type is RockTile && printedRockTile == false)
-					{
-						RockTile rockTile = (RockTile)tile;
-						rockTile.Accept(visitor);
-						printedRockTile = true;
-					}
-					else if (tile.Type is IslandTile && printedIslandTile == false)
-					{
-						IslandTile islandTile = (IslandTile)tile;
-						islandTile.Accept(visitor);
-						printedIslandTile = true;
-					}
-				}
 			});
         }   
         public bool CheckUsers()
