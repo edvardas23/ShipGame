@@ -38,33 +38,31 @@ namespace GameClient.MVVM.Builder
             this.Reset();
         }
 
-        public void BuildPartRockTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)
+        public void BuildPartRockTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory, ConcreteVisitor visitor)
         {
 			Tile temp_tile = new Tile(x, y, false, true);
 			var flyweight = factory.GetFlyweight(temp_tile);
             Tile tile = flyweight.Operation(temp_tile, x, y);
             RockTile rockTile = new RockTile(tile);
-            rockTile.Background = Brushes.Olive;
             rockTile.Name = identifier + x.ToString() + y.ToString();
             rockTile.Width = width;
             rockTile.Height = height;
-            if (identifier.Equals("e"))
+			if (identifier.Equals("e"))
             {
                 rockTile.Command = AttackTileCommand;
                 rockTile.Click += MainViewModel.Button_Click;
             }
             else
-            {
-
-            }
+			{
+				rockTile.Accept(visitor);
+				rockTile.Background = Brushes.Olive;
+			}
             newStackPanel.Children.Add(rockTile);
             this.map.Add(rockTile);
 			tiles.Add(rockTile);
-			//var visitor = new ConcreteVisitor();
-			//rockTile.Accept(visitor);
         }
 
-        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory)
+        public void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory, ConcreteVisitor visitor)
         {
 			Tile temp_tile = new Tile(x, y, true, false);
 			var flyweight = factory.GetFlyweight(temp_tile);
@@ -79,20 +77,19 @@ namespace GameClient.MVVM.Builder
                 seaTile.Click += MainViewModel.Button_Click;
             }
             else
-            {
-                for (int k = 0; k < 10; k++)
+			{
+				seaTile.Accept(visitor);
+				for (int k = 0; k < 10; k++)
                 {
                     if (y.ToString() + x.ToString() == prototype.array[k])
                     {
-                        seaTile.Background = Brushes.Green;
+                        ///seaTile.Background = Brushes.Green;
                     }
                 }
             }
             newStackPanel.Children.Add(seaTile);
             this.map.Add(seaTile);
 			tiles.Add(seaTile);
-			//var visitor = new ConcreteVisitor();
-			//seaTile.Accept(visitor);
 		}
 
 		public string BuildBattleShipTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory)

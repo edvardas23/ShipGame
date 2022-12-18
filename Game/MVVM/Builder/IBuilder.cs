@@ -7,12 +7,13 @@ using System.Windows.Controls;
 using GameClient.MVVM.Core;
 using GameClient.MVVM.Model.PrototypeModels;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
+using GameClient.MVVM.Visitor;
 
 namespace GameClient.MVVM.Builder
 {
     public interface IBuilder
     {
-        void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory);
+        void BuildPartSeaTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, Prototype prototype, FlyweightFactory factory, ConcreteVisitor visitor);
 
         void BuildPartRockTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory);
 		string BuildBattleShipTile(int x, int y, string identifier, double width, double height, RelayCommand AttackTileCommand, StackPanel newStackPanel, FlyweightFactory factory);

@@ -10,6 +10,7 @@ using Game;
 using GameClient.MVVM.Model;
 using GameClient.MVVM.Model.PrototypeModels;
 using GameClient.MVVM.Model.UnitModels.FlyWeight;
+using GameClient.MVVM.Visitor;
 
 namespace GameClient.MVVM.Builder
 {
@@ -27,6 +28,7 @@ namespace GameClient.MVVM.Builder
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width2 = stackPanel.ActualWidth / Session.Instance.MapSize;
             double height2 = stackPanel.ActualHeight / Session.Instance.MapSize;
+			var visitor = new ConcreteVisitor();
 			for (int i = 0; i < x; i++)
             {
                 StackPanel newStackPanel = new StackPanel();
@@ -36,7 +38,7 @@ namespace GameClient.MVVM.Builder
                 stackPanel.Children.Add(newStackPanel);
                 for (int j = 0; j < y; j++)
                 {
-                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel, prototype, factory);
+                    this.builder.BuildPartSeaTile(i, j, identifier, width2, height2, AttackTileCommand, newStackPanel, prototype, factory, visitor);
                 }
             }
         }
@@ -48,6 +50,7 @@ namespace GameClient.MVVM.Builder
             StackPanel stackPanel = (StackPanel)MainWindow.AppWindow.FindName(identifier + "StackPanel");
             double width = stackPanel.ActualWidth / Session.Instance.MapSize;
             double height = stackPanel.ActualHeight / Session.Instance.MapSize;
+			var visitor = new ConcreteVisitor();
 			for (int i = 0; i < x; i++)
             {
                 StackPanel newStackPanel = new StackPanel();
@@ -74,10 +77,10 @@ namespace GameClient.MVVM.Builder
 							}
 						}
 						else
-							this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
+							this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory, visitor);
 					}
 					else
-						this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory);
+						this.builder.BuildPartSeaTile(i, j, identifier, width, height, AttackTileCommand, newStackPanel, prototype, factory, visitor);
                 }
             }
 			MessageBox.Show("cood1: " + cood1 + "\n" + "cood2: " + cood2 + "\n" + cood3 + "cood3: " + "\n" + "cood4: " + cood4 + "\n" + "cood5: " + cood5 + "\n");

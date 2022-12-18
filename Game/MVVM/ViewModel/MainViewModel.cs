@@ -506,7 +506,7 @@ namespace GameClient.MVVM.ViewModel
                 ConcreteBuilder builder = new ConcreteBuilder();
                 director.Builder = builder;
 				var factory = new FlyweightFactory();
-                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory, gameType);
+                director.BuildFullFeaturedMap(Session.Instance.MapSize, Session.Instance.MapSize, identifier, AttackTileCommand, clone, factory);
 				//For Visitor pattern implementation only
 				var visitor = new ConcreteVisitor();
 				List<Tile> tiles = builder.GetTiles();
